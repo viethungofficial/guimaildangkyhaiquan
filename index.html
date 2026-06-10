@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hỗ trợ soạn Email cập nhật MST Hải Quan</title>
+    <title>Hỗ trợ soạn Email & Quản lý Thông số Hải Quan</title>
     <!-- Favicon SVG nội tuyến (Biểu tượng phong thư xanh chuyên nghiệp) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231d4ed8'/><path d='M20 32h60v36H20z' fill='none' stroke='%23fef08a' stroke-width='6' stroke-linejoin='round'/><path d='M20 32l30 22 30-22' fill='none' stroke='%23fef08a' stroke-width='6' stroke-linejoin='round'/></svg>">
     <!-- Tailwind CSS CDN -->
@@ -43,8 +43,8 @@
                     <i class="fa-solid fa-envelope-open-text text-lg text-yellow-300"></i>
                 </div>
                 <div>
-                    <h1 class="text-base font-bold tracking-tight">Hỗ Trợ Soạn Email Hải Quan</h1>
-                    <p class="text-[11px] text-blue-100 opacity-90">Yêu cầu cập nhật Mã Số Thuế lên hệ thống cổng đăng ký sử dụng</p>
+                    <h1 class="text-base font-bold tracking-tight">Hỗ Trợ Soạn Email & Quản Lý Thông Số Hải Quan</h1>
+                    <p class="text-[11px] text-blue-100 opacity-90">Yêu cầu cập nhật Mã Số Thuế lên hệ thống và đồng bộ thông số khai báo</p>
                 </div>
             </div>
             
@@ -85,7 +85,7 @@
         </div>
     </header>
 
-    <!-- Main Content Area (Strict matching heights with auto container sizing to prevent viewport stretching) -->
+    <!-- Main Content Area -->
     <main class="max-w-7xl w-full mx-auto px-4 py-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
         
         <!-- Left Column: Inputs & Destination Cards (Natural stacking height) -->
@@ -97,7 +97,7 @@
                     <i class="fa-solid fa-lightbulb text-blue-600"></i> HƯỚNG DẪN NHANH:
                 </h3>
                 <p class="text-blue-950/80 leading-relaxed">
-                    Nhập <strong>Mã số thuế</strong> → Bấm <strong>Tra cứu</strong> → Kiểm tra thông tin rồi bấm <strong>Mở Soạn Trong GMAIL</strong> để hoàn tất nhanh gọn.
+                    Nhập <strong>Mã số thuế</strong> → Bấm <strong>Tra cứu</strong>. Hệ thống sẽ tự động đồng bộ sang cả phần soạn thư Gmail lẫn tab Quản lý thông số kỹ thuật bên phải.
                 </p>
             </div>
 
@@ -177,66 +177,216 @@
 
         </section>
 
-        <!-- Right Column: Email Preview (Perfect height-match with left side content under all zoom states) -->
-        <section class="lg:col-span-7 flex flex-col h-full min-h-0">
+        <!-- Right Column: Email Preview & Customs Parameters Workspace -->
+        <section class="lg:col-span-7 flex flex-col h-full min-h-[500px]">
             
-            <!-- Email Draft Wrapper -->
+            <!-- Email & Params Draft Wrapper -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden flex flex-col h-full">
                 
-                <!-- Email Client Header UI -->
-                <div class="bg-slate-900 text-white px-4 py-2 flex items-center justify-between flex-shrink-0">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-red-500"></span>
-                        <span class="w-2 h-2 rounded-full bg-yellow-500"></span>
-                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                        <span class="text-[11px] font-semibold text-slate-400 ml-1.5">Giao diện soạn thảo mẫu thư gửi</span>
+                <!-- Tab Switching Header UI -->
+                <div class="bg-slate-950 text-white flex flex-col sm:flex-row items-stretch justify-between border-b border-slate-800 flex-shrink-0">
+                    <!-- Left: Dots & Browser mock styling -->
+                    <div class="px-4 py-2 flex items-center gap-2 border-b sm:border-b-0 border-slate-800">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                        <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
                     </div>
-                    <div class="flex gap-2">
-                        <button id="btn-copy-all" class="bg-slate-800 hover:bg-slate-700 active:bg-slate-600 text-slate-200 text-[10px] px-2.5 py-1 rounded-md transition-all flex items-center gap-1 font-medium border border-slate-700">
+                    
+                    <!-- Middle Tabs Switcher -->
+                    <div class="flex flex-1 justify-start">
+                        <button id="tab-email-btn" class="px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-900 text-white border-t-2 border-t-blue-500">
+                            <i class="fa-solid fa-envelope-open text-blue-400"></i>
+                            Soạn Email Mẫu
+                        </button>
+                        <button id="tab-params-btn" class="px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-950 text-slate-400 hover:text-white border-t-2 border-t-transparent">
+                            <i class="fa-solid fa-gears text-amber-400"></i>
+                            Thông Số Hải Quan
+                        </button>
+                    </div>
+
+                    <!-- Right Quick actions -->
+                    <div class="p-2 flex items-center">
+                        <button id="btn-copy-all" class="bg-slate-900 hover:bg-slate-850 text-slate-200 text-[10px] px-2.5 py-1 rounded-md transition-all flex items-center gap-1 font-medium border border-slate-800">
                             <i class="fa-regular fa-copy"></i> Copy nội dung thư
                         </button>
-                    </div>
-                </div>
-
-                <!-- Email Form Fields Inside the Draft Container -->
-                <div class="bg-slate-50 border-b border-slate-200 p-2.5 space-y-0.5 flex-shrink-0">
-                    <div class="flex items-center gap-3 text-xs">
-                        <span class="text-slate-400 w-12 text-right font-semibold">Đến:</span>
-                        <div class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded-full text-[10px] font-semibold">
-                            bophanhotro@customs.gov.vn
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 text-xs">
-                        <span class="text-slate-400 w-12 text-right font-semibold">Tiêu đề:</span>
-                        <div class="text-slate-800 font-bold truncate bg-white px-2 py-0.5 rounded border border-slate-200 w-full text-[10px]">
-                            XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Live Email Body Area (Uses flexible viewport heights, automatically fills exact vertical space) -->
-                <div class="flex-grow p-2.5 flex flex-col relative bg-slate-50/20 min-h-0 overflow-hidden">
-                    <label for="email-preview-area" class="sr-only">Nội dung Email</label>
-                    <textarea id="email-preview-area" 
-                              class="w-full h-full min-h-[280px] lg:min-h-0 p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-slate-800 leading-relaxed text-[11px] resize-none shadow-inner overflow-y-auto"
-                              spellcheck="false"></textarea>
-                    
-                    <div class="absolute bottom-3 right-3 opacity-20 pointer-events-none text-slate-400 text-[8px] font-mono">
-                        <i class="fa-solid fa-pen"></i> Soạn thảo tự do
-                    </div>
-                </div>
-
-                <!-- Footer Action Bar -->
-                <div class="bg-slate-50 border-t border-slate-200 p-2.5 flex flex-col sm:flex-row justify-between items-center gap-2 flex-shrink-0">
-                    <div class="text-[10px] text-slate-500">
-                        <i class="fa-solid fa-circle-check text-green-500 mr-1"></i> Nội dung đã chuẩn hóa theo mẫu yêu cầu.
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <!-- Gmail Redirect Button in New Tab -->
-                        <button id="btn-send-gmail" class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:from-red-800 active:to-red-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-md hover:shadow transition-all">
-                            <i class="fa-brands fa-google text-xs"></i>
-                            Mở Soạn Trong GMAIL
+                        <button id="btn-copy-params" class="hidden bg-amber-950/40 hover:bg-amber-900/40 text-amber-300 text-[10px] px-2.5 py-1 rounded-md transition-all flex items-center gap-1 font-medium border border-amber-850">
+                            <i class="fa-regular fa-copy"></i> Copy thông số
                         </button>
+                    </div>
+                </div>
+
+                <!-- CONTAINER 1: SOẠN EMAIL TAB -->
+                <div id="tab-email-container" class="flex-grow flex flex-col min-h-0">
+                    <!-- Email Form Fields -->
+                    <div class="bg-slate-50 border-b border-slate-200 p-2.5 space-y-0.5 flex-shrink-0">
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="text-slate-400 w-12 text-right font-semibold">Đến:</span>
+                            <div class="bg-slate-200 text-slate-800 px-2 py-0.5 rounded-full text-[10px] font-semibold">
+                                bophanhotro@customs.gov.vn
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="text-slate-400 w-12 text-right font-semibold">Tiêu đề:</span>
+                            <div class="text-slate-800 font-bold truncate bg-white px-2 py-0.5 rounded border border-slate-200 w-full text-[10px]">
+                                XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Email Body Area -->
+                    <div class="flex-grow p-2.5 flex flex-col relative bg-slate-50/20 min-h-0 overflow-hidden">
+                        <label for="email-preview-area" class="sr-only">Nội dung Email</label>
+                        <textarea id="email-preview-area" 
+                                  class="w-full h-full min-h-[300px] lg:min-h-0 p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-mono text-slate-800 leading-relaxed text-[11px] resize-none shadow-inner overflow-y-auto"
+                                  spellcheck="false"></textarea>
+                        
+                        <div class="absolute bottom-3 right-3 opacity-20 pointer-events-none text-slate-400 text-[8px] font-mono">
+                            <i class="fa-solid fa-pen"></i> Soạn thảo tự do
+                        </div>
+                    </div>
+
+                    <!-- Footer Action Bar for Email -->
+                    <div class="bg-slate-50 border-t border-slate-200 p-2.5 flex flex-col sm:flex-row justify-between items-center gap-2 flex-shrink-0">
+                        <div class="text-[10px] text-slate-500">
+                            <i class="fa-solid fa-circle-check text-green-500 mr-1"></i> Nội dung đã chuẩn hóa theo mẫu yêu cầu.
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <!-- Gmail Redirect Button -->
+                            <button id="btn-send-gmail" class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 active:from-red-800 active:to-red-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-md hover:shadow transition-all">
+                                <i class="fa-brands fa-google text-xs"></i>
+                                Mở Soạn Trong GMAIL
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTAINER 2: THÔNG SỐ HẢI QUAN TAB (New requested feature) -->
+                <div id="tab-params-container" class="hidden flex-grow flex flex-col min-h-0 bg-slate-50">
+                    <div class="p-4 space-y-4 flex-grow overflow-y-auto">
+                        
+                        <!-- Header Banner -->
+                        <!-- <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-850 flex items-start gap-3 shadow-sm"> -->
+                            <!-- <div class="bg-amber-500 text-white p-1.5 rounded-lg mt-0.5"> -->
+                                <!-- <i class="fa-solid fa-triangle-exclamation"></i> -->
+                            <!-- </div> -->
+                            <!-- <div> -->
+                                <!-- <h4 class="font-bold text-amber-900 mb-0.5">Khai báo Thông số Hệ thống VNACCS / V5</h4> -->
+                                <!-- <p class="text-slate-600 leading-relaxed text-[11px]"> -->
+                                    <!-- Các thông số dưới đây dùng để thiết lập kết nối phần mềm khai Hải quan điện tử (ECUS5, v.v.). -->
+                                <!-- </p> -->
+                            <!-- </div> -->
+                        <!-- </div> -->
+
+                        <!-- Main Form Fields -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                            
+                            <!-- MST (Synced Automatically) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mã Số Thuế (Đồng bộ)</label>
+                                <div class="relative bg-slate-100 border border-slate-300 rounded-lg py-2 px-3 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-solid fa-id-card text-slate-500 text-xs"></i>
+                                        <span id="param-mst-text" class="font-mono text-xs font-bold text-slate-700">[Chưa có thông tin]</span>
+                                    </div>
+                                    <span class="text-[9px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded">Tự động đồng bộ</span>
+                                </div>
+                            </div>
+
+                            <!-- Pass Quản trị (Readonly) -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Pass quản trị (Cố định)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-lock-open text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" value="Tchq@123" readonly disabled
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-slate-100/80 text-slate-500 font-mono font-medium select-all cursor-not-allowed shadow-sm" />
+                                </div>
+                            </div>
+
+                            <!-- Pass (Readonly) -->
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Mật khẩu Terminal (Cố định)</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-key text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" value="12345678" readonly disabled
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-200 rounded-lg bg-slate-100/80 text-slate-500 font-mono font-medium select-all cursor-not-allowed shadow-sm" />
+                                </div>
+                            </div>
+
+                            <!-- User ID 1 -->
+                            <div>
+                                <label for="userid1-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">User ID 1</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="userid1-input" value="DM429001" placeholder="Nhập User ID 1"
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
+                                </div>
+                            </div>
+
+                            <!-- User ID 2 -->
+                            <div>
+                                <label for="userid2-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">User ID 2</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-user-plus text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="userid2-input" value="DM429002" placeholder="Nhập User ID 2"
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
+                                </div>
+                            </div>
+
+                            <!-- Terminal ID -->
+                            <div>
+                                <label for="terminalid-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Terminal ID</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-computer text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="terminalid-input" value="CC782C" placeholder="Nhập Terminal ID"
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
+                                </div>
+                            </div>
+
+                            <!-- Terminal Access Key -->
+                            <div>
+                                <label for="accesskey-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Terminal Access Key</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+                                        <i class="fa-solid fa-fingerprint text-slate-400 text-xs"></i>
+                                    </div>
+                                    <input type="text" id="accesskey-input" value="KBXXLBOYB3NSGHPW" placeholder="Nhập Access Key"
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Live Parameters Textarea Preview (Dynamic Display) -->
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Định dạng xem trước khi xuất (Có thể dán vào Notepad/Word)</label>
+                            <textarea id="params-preview-area" readonly rows="5"
+                                      class="w-full p-2.5 bg-slate-900 text-slate-300 border border-slate-800 rounded-lg font-mono text-[11px] leading-relaxed resize-none cursor-default shadow-inner select-all"></textarea>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer Action Bar for Parameters -->
+                    <div class="bg-amber-50 border-t border-amber-100 p-2.5 flex flex-col sm:flex-row justify-between items-center gap-2 flex-shrink-0">
+                        <div class="text-[10px] text-amber-800">
+                            <i class="fa-solid fa-info-circle mr-1"></i> Định dạng chuẩn hóa văn bản dán đa nền tảng.
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <!-- Copy Parameters Button -->
+                            <button id="btn-copy-params-bottom" class="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 active:from-amber-800 active:to-amber-900 text-white px-4 py-1.5 rounded-lg text-xs font-bold shadow-md hover:shadow transition-all">
+                                <i class="fa-regular fa-copy text-xs"></i>
+                                Copy Thông Số
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -275,16 +425,36 @@
         const toastMessage = document.getElementById('toast-message');
         const hiddenCopyBuffer = document.getElementById('hidden-copy-buffer');
 
+        // Tab Switching Elements
+        const tabEmailBtn = document.getElementById('tab-email-btn');
+        const tabParamsBtn = document.getElementById('tab-params-btn');
+        const tabEmailContainer = document.getElementById('tab-email-container');
+        const tabParamsContainer = document.getElementById('tab-params-container');
+        const btnCopyParamsHeader = document.getElementById('btn-copy-params');
+
+        // Parameter Input Elements
+        const paramMstText = document.getElementById('param-mst-text');
+        const userid1Input = document.getElementById('userid1-input');
+        const userid2Input = document.getElementById('userid2-input');
+        const terminalidInput = document.getElementById('terminalid-input');
+        const accesskeyInput = document.getElementById('accesskey-input');
+        const paramsPreviewArea = document.getElementById('params-preview-area');
+        const btnCopyParamsBottom = document.getElementById('btn-copy-params-bottom');
+
         // Initial Data / Formats
         let state = {
             mst: '',
-            companyName: ''
+            companyName: '',
+            userId1: 'DM429001',
+            userId2: 'DM429002',
+            terminalId: 'CC782C',
+            terminalAccessKey: 'KBXXLBOYB3NSGHPW'
         };
 
         const emailRecipient = 'bophanhotro@customs.gov.vn';
         const emailSubject = 'XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN';
 
-        // Template generator
+        // Email Template generator
         function generateEmailBody(mst, companyName) {
             return `Kính gửi Tổng cục Hải Quan\n` +
                    `Đơn vị đăng ký tài khoản trên hệ thống hải quan trên trang : "https://dknsd.customs.gov.vn/Pages/dn.aspx" báo lỗi “Mã số thuế không tồn tại” Nhờ anh/chị hỗ trợ cập nhập giúp đơn vị MST trên hệ thống Hải Quan\n` +
@@ -295,10 +465,46 @@
                    `Trân trọng cảm ơn !`;
         }
 
-        // Display update function
+        // Customs Parameters text generator for word/notepad pasting
+        function generateParamsText() {
+            const mstVal = state.mst || '[Chưa nhập MST]';
+            return `THÔNG SỐ HẢI QUAN DOANH NGHIỆP\n` +
+                   `----------------------------------\n` +
+                   `MST: ${mstVal}\n` +
+                   `Pass quản trị: Tchq@123\n` +
+                   `User ID 1: ${state.userId1}\n` +
+                   `User ID 2: ${state.userId2}\n` +
+                   `Pass: 12345678\n` +
+                   `Terminal ID: ${state.terminalId}\n` +
+                   `Terminal Access Key: ${state.terminalAccessKey}\n` +
+                   `----------------------------------\n` +
+                   `Ngày xuất: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN')}`;
+        }
+
+        // Display update function for Email Preview
         function updateEmailPreview() {
             const body = generateEmailBody(state.mst, state.companyName);
             emailPreviewArea.value = body;
+        }
+
+        // Display update function for Technical Parameters Preview
+        function updateParamsPreview() {
+            // Update MST label inside the parameters tab
+            if (state.mst) {
+                paramMstText.textContent = state.mst;
+                paramMstText.className = "font-mono text-xs font-bold text-blue-700";
+            } else {
+                paramMstText.textContent = "[Chưa nhập MST]";
+                paramMstText.className = "font-mono text-xs font-medium text-slate-400";
+            }
+            // Generate full preview
+            paramsPreviewArea.value = generateParamsText();
+        }
+
+        // Master UI Sync
+        function syncUI() {
+            updateEmailPreview();
+            updateParamsPreview();
         }
 
         // Custom Toast function
@@ -342,6 +548,35 @@
             }
         }
 
+        // Tab Switcher Controller
+        function switchTab(activeTab) {
+            if (activeTab === 'email') {
+                // Style Active Button
+                tabEmailBtn.className = "px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-900 text-white border-t-2 border-t-blue-500";
+                tabParamsBtn.className = "px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-950 text-slate-400 hover:text-white border-t-2 border-t-transparent";
+                
+                // Show/Hide Containers
+                tabEmailContainer.classList.remove('hidden');
+                tabParamsContainer.classList.add('hidden');
+
+                // Adjust Top Bar Copy Actions
+                btnCopyAll.classList.remove('hidden');
+                btnCopyParamsHeader.classList.add('hidden');
+            } else {
+                // Style Active Button
+                tabParamsBtn.className = "px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-900 text-white border-t-2 border-t-amber-500";
+                tabEmailBtn.className = "px-4 py-2.5 text-xs font-bold border-r border-slate-800 transition-all flex items-center gap-1.5 bg-slate-950 text-slate-400 hover:text-white border-t-2 border-t-transparent";
+                
+                // Show/Hide Containers
+                tabParamsContainer.classList.remove('hidden');
+                tabEmailContainer.classList.add('hidden');
+
+                // Adjust Top Bar Copy Actions
+                btnCopyAll.classList.add('hidden');
+                btnCopyParamsHeader.classList.remove('hidden');
+            }
+        }
+
         // Lookup Function (Vietnam business tax info API with fallbacks)
         async function fetchCompanyInfo(mst) {
             if (!mst || mst.trim() === '') {
@@ -368,11 +603,12 @@
                 if (result && result.code === '00' && result.data) {
                     const companyName = result.data.name;
                     companyNameInput.value = companyName;
+                    
                     state.companyName = companyName;
                     state.mst = cleanedMst;
                     mstInput.value = cleanedMst;
                     
-                    updateEmailPreview();
+                    syncUI();
                     
                     lookupStatus.className = "text-[10px] mt-0.5 text-emerald-600 font-semibold";
                     lookupStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Đã tìm thấy doanh nghiệp!';
@@ -384,7 +620,7 @@
                 console.error("Lỗi tra cứu MST:", error);
                 
                 state.mst = cleanedMst;
-                updateEmailPreview();
+                syncUI();
 
                 lookupStatus.className = "text-[10px] mt-0.5 text-amber-600 font-medium bg-amber-50 p-1.5 rounded border border-amber-200 leading-relaxed";
                 lookupStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Không thể kết nối API hoặc MST chưa đồng bộ. <strong>Vui lòng tự nhập tay tên đơn vị nhé!</strong>';
@@ -396,15 +632,36 @@
             }
         }
 
-        // Event Listeners for Input Elements
+        // Event Listeners for Left Input Elements
         mstInput.addEventListener('input', (e) => {
             state.mst = e.target.value.trim();
-            updateEmailPreview();
+            syncUI();
         });
 
         companyNameInput.addEventListener('input', (e) => {
             state.companyName = e.target.value;
-            updateEmailPreview();
+            syncUI();
+        });
+
+        // Event Listeners for Parameter Inputs (Realtime sync)
+        userid1Input.addEventListener('input', (e) => {
+            state.userId1 = e.target.value;
+            updateParamsPreview();
+        });
+
+        userid2Input.addEventListener('input', (e) => {
+            state.userId2 = e.target.value;
+            updateParamsPreview();
+        });
+
+        terminalidInput.addEventListener('input', (e) => {
+            state.terminalId = e.target.value;
+            updateParamsPreview();
+        });
+
+        accesskeyInput.addEventListener('input', (e) => {
+            state.terminalAccessKey = e.target.value;
+            updateParamsPreview();
         });
 
         // Click handlers
@@ -425,27 +682,50 @@
             companyNameInput.value = '';
             state.mst = '';
             state.companyName = '';
+            
+            // Reset to defaults for parameters too
+            state.userId1 = 'DM429001';
+            state.userId2 = 'DM429002';
+            state.terminalId = 'CC782C';
+            state.terminalAccessKey = 'KBXXLBOYB3NSGHPW';
+            
+            userid1Input.value = state.userId1;
+            userid2Input.value = state.userId2;
+            terminalidInput.value = state.terminalId;
+            accesskeyInput.value = state.terminalAccessKey;
+
             lookupStatus.classList.add('hidden');
-            updateEmailPreview();
-            showToast('Đã dọn dẹp biểu mẫu!', 'success');
+            syncUI();
+            showToast('Đã dọn dẹp và khôi phục biểu mẫu về mặc định!', 'success');
         });
 
+        // Copy Actions
         btnCopyAll.addEventListener('click', () => {
             const fullBody = emailPreviewArea.value;
             copyToClipboard(fullBody, 'Đã sao chép toàn bộ nội dung Email!');
         });
 
-        // Open Gmail on a standard new browser tab
+        const performParamsCopy = () => {
+            const textToCopy = paramsPreviewArea.value;
+            copyToClipboard(textToCopy, 'Đã sao chép toàn bộ thông số khai báo Hải Quan!');
+        };
+
+        btnCopyParamsHeader.addEventListener('click', performParamsCopy);
+        btnCopyParamsBottom.addEventListener('click', performParamsCopy);
+
+        // Open Gmail in a standard new browser tab
         btnSendGmail.addEventListener('click', () => {
             const body = emailPreviewArea.value;
             const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailRecipient)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(body)}`;
-            
-            // Standard tab open on current browser window
             window.open(gmailUrl, '_blank', 'noopener,noreferrer');
         });
 
-        // Initialize view with blank template
-        updateEmailPreview();
+        // Tabs event listeners
+        tabEmailBtn.addEventListener('click', () => switchTab('email'));
+        tabParamsBtn.addEventListener('click', () => switchTab('params'));
+
+        // Initialize view
+        syncUI();
 
     </script>
 </body>
