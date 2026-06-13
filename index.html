@@ -260,23 +260,10 @@
                     </div>
                 </div>
 
-                <!-- CONTAINER 2: THÔNG SỐ HẢI QUAN TAB (New requested feature) -->
+                <!-- CONTAINER 2: THÔNG SỐ HẢI QUAN TAB -->
                 <div id="tab-params-container" class="hidden flex-grow flex flex-col min-h-0 bg-slate-50">
                     <div class="p-4 space-y-4 flex-grow overflow-y-auto">
                         
-                        <!-- Header Banner -->
-                        <!-- <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-850 flex items-start gap-3 shadow-sm"> -->
-                            <!-- <div class="bg-amber-500 text-white p-1.5 rounded-lg mt-0.5"> -->
-                                <!-- <i class="fa-solid fa-triangle-exclamation"></i> -->
-                            <!-- </div> -->
-                            <!-- <div> -->
-                                <!-- <h4 class="font-bold text-amber-900 mb-0.5">Khai báo Thông số Hệ thống VNACCS / V5</h4> -->
-                                <!-- <p class="text-slate-600 leading-relaxed text-[11px]"> -->
-                                    <!-- Các thông số dưới đây dùng để thiết lập kết nối phần mềm khai Hải quan điện tử (ECUS5, v.v.). -->
-                                <!-- </p> -->
-                            <!-- </div> -->
-                        <!-- </div> -->
-
                         <!-- Main Form Fields -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                             
@@ -323,20 +310,20 @@
                                     <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-user text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" id="userid1-input" value="DM429001" placeholder="Nhập User ID 1"
+                                    <input type="text" id="userid1-input" value=""
                                            class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
                                 </div>
                             </div>
 
-                            <!-- User ID 2 -->
+                            <!-- User ID 2 (Automatically generated) -->
                             <div>
-                                <label for="userid2-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">User ID 2</label>
+                                <label for="userid2-input" class="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">User ID 2 (Tự động tăng)</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-user-plus text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" id="userid2-input" value="DM429002" placeholder="Nhập User ID 2"
-                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
+                                    <input type="text" id="userid2-input" value="" 
+                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-slate-50 font-mono shadow-sm" />
                                 </div>
                             </div>
 
@@ -347,7 +334,7 @@
                                     <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-computer text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" id="terminalid-input" value="CC782C" placeholder="Nhập Terminal ID"
+                                    <input type="text" id="terminalid-input" value=""
                                            class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
                                 </div>
                             </div>
@@ -359,7 +346,7 @@
                                     <div class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-fingerprint text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" id="accesskey-input" value="KBXXLBOYB3NSGHPW" placeholder="Nhập Access Key"
+                                    <input type="text" id="accesskey-input" value=""
                                            class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono shadow-sm" />
                                 </div>
                             </div>
@@ -441,18 +428,45 @@
         const paramsPreviewArea = document.getElementById('params-preview-area');
         const btnCopyParamsBottom = document.getElementById('btn-copy-params-bottom');
 
-        // Initial Data / Formats
+        // Initial Data / Formats (Set technical params empty by default)
         let state = {
             mst: '',
             companyName: '',
-            userId1: 'DM429001',
-            userId2: 'DM429002',
-            terminalId: 'CC782C',
-            terminalAccessKey: 'KBXXLBOYB3NSGHPW'
+            userId1: '',
+            userId2: '',
+            terminalId: '',
+            terminalAccessKey: ''
         };
 
         const emailRecipient = 'bophanhotro@customs.gov.vn';
         const emailSubject = 'XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN';
+
+        // Helper: Format DateTime to dd/MM/yyyy HH:mm:ss
+        function formatDateTime(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+        }
+
+        // Helper: Automatically increment User ID (e.g., DM667001 -> DM667002)
+        function autoIncrementUserId(val) {
+            if (!val) return '';
+            // Match suffix numbers
+            const match = val.match(/^(.*?)(\d+)$/);
+            if (match) {
+                const prefix = match[1];
+                const digits = match[2];
+                const incremented = parseInt(digits, 10) + 1;
+                const paddedDigits = String(incremented).padStart(digits.length, '0');
+                return prefix + paddedDigits;
+            }
+            // Fallback if no trailing digits
+            return val ? val + '2' : '';
+        }
 
         // Email Template generator
         function generateEmailBody(mst, companyName) {
@@ -468,17 +482,22 @@
         // Customs Parameters text generator for word/notepad pasting
         function generateParamsText() {
             const mstVal = state.mst || '[Chưa nhập MST]';
-            return `THÔNG SỐ VNACCS CHO DOANH NGHIỆP KÊ KHAI HẢI QUAN\n` +
+            const u1 = state.userId1 || '[Chưa nhập User ID 1]';
+            const u2 = state.userId2 || '[Chưa nhập User ID 2]';
+            const tId = state.terminalId || '[Chưa nhập Terminal ID]';
+            const aKey = state.terminalAccessKey || '[Chưa nhập Access Key]';
+            
+            return `THÔNG SỐ HẢI QUAN DOANH NGHIỆP\n` +
                    `----------------------------------\n` +
                    `MST: ${mstVal}\n` +
                    `Pass quản trị: Tchq@123\n` +
-                   `User ID 1: ${state.userId1}\n` +
-                   `User ID 2: ${state.userId2}\n` +
+                   `User ID 1: ${u1}\n` +
+                   `User ID 2: ${u2}\n` +
                    `Pass: 12345678\n` +
-                   `Terminal ID: ${state.terminalId}\n` +
-                   `Terminal Access Key: ${state.terminalAccessKey}\n` +
+                   `Terminal ID: ${tId}\n` +
+                   `Terminal Access Key: ${aKey}\n` +
                    `----------------------------------\n` +
-                   `Ngày xuất: ${new Date().toLocaleDateString('vi-VN')} ${new Date().toLocaleTimeString('vi-VN')}`;
+                   `Ngày xuất: ${formatDateTime(new Date())}`;
         }
 
         // Display update function for Email Preview
@@ -634,7 +653,17 @@
 
         // Event Listeners for Left Input Elements
         mstInput.addEventListener('input', (e) => {
-            state.mst = e.target.value.trim();
+            const rawVal = e.target.value;
+            const cleanVal = rawVal.trim();
+            state.mst = cleanVal;
+            
+            // Automatically clear details if search field is empty
+            if (cleanVal === '') {
+                state.companyName = '';
+                companyNameInput.value = '';
+                lookupStatus.classList.add('hidden');
+                lookupStatus.innerHTML = '';
+            }
             syncUI();
         });
 
@@ -643,9 +672,16 @@
             syncUI();
         });
 
-        // Event Listeners for Parameter Inputs (Realtime sync)
+        // Event Listeners for Parameter Inputs (Realtime sync & auto creation)
         userid1Input.addEventListener('input', (e) => {
-            state.userId1 = e.target.value;
+            const val = e.target.value;
+            state.userId1 = val;
+            
+            // Auto generate and update User ID 2
+            const nextUserId = autoIncrementUserId(val);
+            state.userId2 = nextUserId;
+            userid2Input.value = nextUserId;
+            
             updateParamsPreview();
         });
 
@@ -677,26 +713,27 @@
             }
         });
 
+        // Clear All Fields
         btnClear.addEventListener('click', () => {
             mstInput.value = '';
             companyNameInput.value = '';
             state.mst = '';
             state.companyName = '';
             
-            // Reset to defaults for parameters too
-            state.userId1 = 'DM429001';
-            state.userId2 = 'DM429002';
-            state.terminalId = 'CC782C';
-            state.terminalAccessKey = 'KBXXLBOYB3NSGHPW';
+            // Reset parameter state to completely empty fields
+            state.userId1 = '';
+            state.userId2 = '';
+            state.terminalId = '';
+            state.terminalAccessKey = '';
             
-            userid1Input.value = state.userId1;
-            userid2Input.value = state.userId2;
-            terminalidInput.value = state.terminalId;
-            accesskeyInput.value = state.terminalAccessKey;
+            userid1Input.value = '';
+            userid2Input.value = '';
+            terminalidInput.value = '';
+            accesskeyInput.value = '';
 
             lookupStatus.classList.add('hidden');
             syncUI();
-            showToast('Đã dọn dẹp và khôi phục biểu mẫu về mặc định!', 'success');
+            showToast('Đã dọn dẹp và khôi phục biểu mẫu về mặc định trống!', 'success');
         });
 
         // Copy Actions
