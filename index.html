@@ -6,7 +6,7 @@
     <title>Trợ Lý Khai Báo Hải Quan</title>
     
     <!-- Favicon SVG -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%231e3a8a'/><stop offset='100%25' stop-color='%230284c7'/></linearGradient><linearGradient id='gold' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23fbbf24'/><stop offset='100%25' stop-color='%23d97706'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23bg)'/><path d='M50 12 L78 24 V48 C78 68 50 86 50 86 C50 86 22 68 22 48 V24 Z' fill='none' stroke='url(%23gold)' stroke-width='5' stroke-linejoin='round'/><path d='M50 32 L53 39 L60 40 L55 45 L56 52 L50 48 L44 52 L45 45 L40 40 L47 39 Z' fill='%23fbbf24'/><path d='M50 54 V72 M40 64 H60 M42 72 C42 72 45 76 50 76 C55 76 58 72 58 72' fill='none' stroke='%2338bdf8' stroke-width='3.5' stroke-linecap='round'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='bg' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%230f172a'/><stop offset='100%25' stop-color='%231d4ed8'/></linearGradient><linearGradient id='gold' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23fbbf24'/><stop offset='100%25' stop-color='%23d97706'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23bg)'/><path d='M50 12 L78 24 V48 C78 68 50 86 50 86 C50 86 22 68 22 48 V24 Z' fill='none' stroke='url(%23gold)' stroke-width='5' stroke-linejoin='round'/><path d='M50 32 L53 39 L60 40 L55 45 L56 52 L50 48 L44 52 L45 45 L40 40 L47 39 Z' fill='%23fbbf24'/><path d='M50 54 V72 M40 64 H60 M42 72 C42 72 45 76 50 76 C55 76 58 72 58 72' fill='none' stroke='%2338bdf8' stroke-width='3.5' stroke-linecap='round'/></svg>">
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,7 +17,8 @@
                 extend: {
                     fontFamily: {
                         sans: ['"Be Vietnam Pro"', 'Inter', 'sans-serif'],
-                        mono: ['"Fira Code"', 'Monaco', 'Consolas', 'monospace']
+                        mono: ['"Fira Code"', 'Monaco', 'Consolas', 'monospace'],
+                        serifDoc: ['"Times New Roman"', 'Times', 'serif']
                     }
                 }
             }
@@ -31,86 +32,153 @@
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
 
     <style>
+        /* Cố định thanh cuộn dọc để bố cục không bao giờ bị xê dịch ngang khi chuyển tab */
+        html {
+            overflow-y: scroll;
+            scrollbar-gutter: stable;
+        }
+
         body {
             font-family: 'Be Vietnam Pro', sans-serif;
-            background-color: #f1f5f9;
+            background-color: #eef2f6;
             background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 0%, rgba(14, 165, 233, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(29, 78, 216, 0.06) 0px, transparent 52%),
+                radial-gradient(at 100% 0%, rgba(13, 148, 136, 0.06) 0px, transparent 52%),
+                radial-gradient(at 50% 100%, rgba(15, 23, 42, 0.04) 0px, transparent 55%);
             background-attachment: fixed;
             color: #0f172a;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: #e2e8f0;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #94a3b8;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+            background: #64748b;
         }
 
-        /* Highlighted Cards with Distinct Borders */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 2px solid #cbd5e1;
-            box-shadow: 0 4px 18px -2px rgba(15, 23, 42, 0.05);
+        /* Card Surfaces */
+        .app-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            box-shadow: 0 4px 18px -3px rgba(15, 23, 42, 0.06);
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
-        .glass-card:hover {
-            border-color: #6366f1;
-            box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.15);
+        .app-card:hover {
+            border-color: #93c5fd;
+            box-shadow: 0 8px 24px -4px rgba(29, 78, 216, 0.09);
         }
 
-        .glass-card-amber {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            border: 2px solid #fed7aa;
-            box-shadow: 0 4px 18px -2px rgba(245, 158, 11, 0.05);
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-        .glass-card-amber:hover {
-            border-color: #f59e0b;
-            box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.15);
-        }
-
-        /* Input Focus Glows */
+        /* Input Focus Glow */
         .glow-input {
             transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
         }
         .glow-input:focus {
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18);
-            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.14);
+            border-color: #1d4ed8;
+            outline: none;
         }
 
-        /* Interactive Hover Utility Items */
-        .utility-item {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        /* Unified Font Styling for Official Letter Form Inputs */
+        .cv-uniform-input {
+            font-family: 'Be Vietnam Pro', sans-serif !important;
+            font-size: 0.75rem !important;
+            line-height: 1.25rem !important;
+            font-weight: 500 !important;
+            color: #0f172a !important;
+            letter-spacing: normal !important;
         }
-        .utility-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.08);
+        .cv-uniform-input::placeholder {
+            font-family: 'Be Vietnam Pro', sans-serif !important;
+            font-size: 0.72rem !important;
+            font-weight: 400 !important;
+            color: #94a3b8 !important;
+            text-transform: none !important;
+        }
+
+        /* Utility Dropdown Items */
+        .utility-dropdown-item {
+            transition: all 0.16s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .utility-dropdown-item:hover {
+            transform: translateX(2px);
+        }
+
+        /* Official A4 Paper Styling */
+        .a4-paper {
+            font-family: "Times New Roman", Times, serif !important;
+            color: #000000;
+            background: #ffffff;
+            line-height: 1.38;
+            font-size: 13px;
+        }
+        .a4-paper * {
+            font-family: "Times New Roman", Times, serif !important;
+        }
+        .a4-paper p {
+            margin-bottom: 4px;
+        }
+
+        /* Validation Error State */
+        .field-error {
+            border-color: #e11d48 !important;
+            background-color: #fff1f2 !important;
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15) !important;
+        }
+
+        /* Print Styles - Đảm bảo in chuẩn 01 trang A4 duy nhất */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm 15mm 12mm 20mm;
+            }
+            html, body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: auto !important;
+                overflow: visible !important;
+            }
+            body > *:not(#print-area) {
+                display: none !important;
+            }
+            #print-area {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #ffffff !important;
+                color: #000000 !important;
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
+            }
+            #print-area .a4-paper {
+                background: #ffffff !important;
+                color: #000000 !important;
+                font-size: 12.5pt !important;
+                line-height: 1.35 !important;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen text-slate-800 flex flex-col justify-between selection:bg-sky-200 selection:text-sky-900 pb-20">
+<body class="min-h-screen text-slate-800 flex flex-col justify-between selection:bg-blue-200 selection:text-blue-950 pb-20">
 
-    <!-- HEADER SECTION -->
-    <header class="bg-white/95 backdrop-blur-md text-slate-900 py-3 border-b-2 border-indigo-100 shadow-sm sticky top-0 z-30">
-        <div class="max-w-[1650px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <!-- ==================== HEADER SECTION ==================== -->
+    <header class="bg-slate-900 text-white py-3 border-b border-slate-800 shadow-md sticky top-0 z-40">
+        <div class="max-w-[1640px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap justify-between items-center gap-3">
             
             <!-- Logo & Title -->
             <div class="flex items-center gap-3.5">
-                <div class="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 via-blue-600 to-sky-500 p-2 shadow-md shadow-indigo-500/20">
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 via-blue-700 to-teal-600 p-2 shadow-md shadow-blue-950/50 border border-blue-400/30 flex-shrink-0">
                     <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow">
                         <defs>
                             <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
@@ -118,78 +186,210 @@
                                 <stop offset="100%" stop-color="#e0f2fe"/>
                             </linearGradient>
                             <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0%" stop-color="#fef08a"/>
+                                <stop offset="0%" stop-color="#fde047"/>
                                 <stop offset="100%" stop-color="#f59e0b"/>
                             </linearGradient>
                         </defs>
                         <path d="M50 8 L85 22 V50 C85 72 50 92 50 92 C50 92 15 72 15 50 V22 Z" fill="url(#shieldGrad)" stroke="url(#goldGrad)" stroke-width="5"/>
                         <path d="M50 22 L53.5 32 L64 32 L55.5 38 L58.5 48 L50 42 L41.5 48 L44.5 38 L36 32 L46.5 32 Z" fill="url(#goldGrad)"/>
-                        <path d="M50 50 V74 M38 64 H62 M40 74 C40 74 44 80 50 80 C56 80 60 74 60 74" fill="none" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M50 50 V74 M38 64 H62 M40 74 C40 74 44 80 50 80 C56 80 60 74 60 74" fill="none" stroke="#1d4ed8" stroke-width="4" stroke-linecap="round"/>
                     </svg>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <h1 class="text-base sm:text-lg font-extrabold tracking-tight bg-gradient-to-r from-indigo-950 via-indigo-800 to-sky-700 bg-clip-text text-transparent">
+                        <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">
                             TRỢ LÝ KHAI BÁO HẢI QUAN
                         </h1>
-                        <span class="hidden md:inline-block bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-indigo-200">v3.1 PRO</span>
+                        <span class="hidden md:inline-block bg-blue-500/20 text-sky-300 text-[10px] font-bold px-2 py-0.5 rounded-full border border-sky-400/30">v4.3 PRO</span>
                     </div>
-                    <p class="text-[11px] text-slate-500 font-medium leading-none mt-0.5">Tự động soạn Email, đồng bộ mã số thuế & quản lý thông số khai báo</p>
+                    <p class="text-[11px] text-slate-300 font-medium leading-none mt-0.5">Đồng bộ MST • Soạn Email • Công văn Reset CKS & Hồ sơ VNACCS</p>
                 </div>
             </div>
             
-            <!-- Header Right Status -->
-            <div class="flex items-center gap-3">
-                <div class="hidden sm:flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-300 px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-sm">
-                    <span class="relative flex h-2.5 w-2.5">
+            <!-- Header Right: Utilities Dropdown Menu & Connection Status -->
+            <div class="flex items-center gap-2.5 sm:gap-3">
+                
+                <!-- Dropdown Menu: Tiện Ích & Liên Kết Hải Quan -->
+                <div class="relative" id="utilities-menu-wrapper">
+                    <button type="button" id="btn-toggle-utilities" aria-expanded="false" aria-haspopup="true"
+                            class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-amber-300 border border-slate-700 px-3.5 py-1.5 rounded-xl text-xs font-bold shadow-sm transition-all">
+                        <span class="w-5 h-5 rounded-md bg-amber-500 text-slate-950 flex items-center justify-center text-[10px]">
+                            <i class="fa-solid fa-toolbox"></i>
+                        </span>
+                        <span class="text-slate-100">Tiện Ích & Liên Kết</span>
+                        <span class="bg-amber-400/20 text-amber-300 border border-amber-400/30 text-[10px] font-extrabold px-1.5 py-0.2 rounded-full">7</span>
+                        <i id="utilities-chevron" class="fa-solid fa-chevron-down text-[10px] text-slate-400 transition-transform duration-200"></i>
+                    </button>
+
+                    <!-- Dropdown Panel -->
+                    <div id="utilities-dropdown-panel"
+                         class="hidden absolute right-0 mt-2 w-[320px] sm:w-[440px] max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 text-slate-800">
+                        <div class="bg-slate-900 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+                            <span class="text-[11px] font-extrabold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                                <i class="fa-solid fa-grid-2"></i> Cổng Tiện Ích & Phần Mềm Hải Quan
+                            </span>
+                            <span class="text-[10px] font-semibold text-slate-400">Mở tab mới</span>
+                        </div>
+
+                        <div class="p-2.5 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[75vh] overflow-y-auto">
+                            <!-- 1. Bộ Cài Java -->
+                            <a href="https://drive.google.com/file/d/1W6rM3ztNnKYdUDlPXjKeFqdR7rSEIrcu/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-rose-600 group-hover:text-white transition-colors">
+                                        <i class="fa-brands fa-java"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Bộ Cài Java</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Môi trường ký số HQ</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 2. Payment247 -->
+                            <a href="https://drive.google.com/file/d/1T-COxCR2uXnFH7tFIMHkXZZnabNtamho/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                        <i class="fa-solid fa-credit-card"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Payment247</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Nộp thuế điện tử 24/7</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 3. Plugin Payment -->
+                            <a href="https://drive.google.com/file/d/1M42cAayGoQW0QZTx1-s_j-AFhz72DFTe/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-blue-700 group-hover:text-white transition-colors">
+                                        <i class="fa-solid fa-puzzle-piece"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Plugin Payment</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Hỗ trợ ký số nộp thuế</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 4. IE Tab Extension -->
+                            <a href="https://chromewebstore.google.com/detail/ie-tab/hehijbfgiekmjfkfjpbkbammjbdenadd" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                                        <i class="fa-brands fa-chrome"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">IE Tab Extension</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Giả lập IE trên Chrome</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 5. Trang V5 -->
+                            <a href="http://customs.gov.vn:8228/index.jsp?pageId=181&cid=1194" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                                        <i class="fa-solid fa-server"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Đăng ký V5</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Hệ thống khai báo V5</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 6. Trang đăng ký -->
+                            <a href="https://dknsd.customs.gov.vn/Pages/dn.aspx" target="_blank" rel="noopener noreferrer" 
+                               class="utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-teal-100 text-teal-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Đăng ký Hải Quan</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Cổng đăng ký VNACCS</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+
+                            <!-- 7. Quản lý người dùng -->
+                            <a href="https://dksd.customs.gov.vn/client/external/login?redirect=%2F" target="_blank" rel="noopener noreferrer" 
+                               class="sm:col-span-2 utility-dropdown-item group flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-blue-50 hover:border-blue-300 text-slate-700 hover:text-blue-800">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <div class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0 text-xs group-hover:bg-slate-800 group-hover:text-white transition-colors">
+                                        <i class="fa-solid fa-users-gear"></i>
+                                    </div>
+                                    <div class="truncate">
+                                        <div class="text-xs font-bold truncate">Quản lý Người Dùng</div>
+                                        <div class="text-[10px] text-slate-500 truncate">Quản trị tài khoản & phân quyền VNACCS</div>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 text-blue-700 flex-shrink-0 ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connection Status Pill -->
+                <div class="hidden md:flex items-center gap-2 bg-emerald-500/15 text-emerald-300 border border-emerald-400/30 px-3.5 py-1.5 rounded-full text-xs font-semibold">
+                    <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
                     </span>
                     <span>Cổng kết nối sẵn sàng</span>
                 </div>
+
             </div>
         </div>
     </header>
 
-    <!-- MAIN 3-COLUMN LAYOUT -->
-    <main class="max-w-[1650px] w-full mx-auto px-4 py-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start flex-grow">
+    <!-- ==================== MAIN 2-COLUMN FIXED WORKSPACE ==================== -->
+    <main class="max-w-[1640px] w-full mx-auto px-4 py-5 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start flex-grow">
         
-        <!-- ==================== CỘT 1: NHẬP THÔNG TIN (lg:col-span-4) ==================== -->
+        <!-- ==================== CỘT TRÁI: DỮ LIỆU DOANH NGHIỆP & HƯỚNG DẪN (lg:col-span-4) ==================== -->
         <section class="lg:col-span-4 flex flex-col gap-4">
             
-            <!-- Form Nhập thông tin doanh nghiệp -->
-            <div class="glass-card rounded-2xl p-4 sm:p-5 border-2 border-indigo-200">
-                <div class="flex items-center justify-between border-b border-slate-200 pb-3 mb-4">
-                    <h2 class="text-xs font-bold text-indigo-950 flex items-center gap-2.5 uppercase tracking-wider">
-                        <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center text-xs shadow-inner border border-indigo-100">
+            <!-- Card 1: Thông tin doanh nghiệp -->
+            <div class="app-card rounded-2xl p-4 sm:p-5">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <h2 class="text-xs font-bold text-slate-900 flex items-center gap-2 uppercase tracking-wider">
+                        <span class="w-7 h-7 rounded-lg bg-blue-50 text-blue-700 flex items-center justify-center text-xs border border-blue-200">
                             <i class="fa-solid fa-building-user"></i>
                         </span>
                         Thông Tin Doanh Nghiệp
                     </h2>
-                    <span class="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-full">Dữ liệu gốc</span>
+                    <span class="text-[10px] bg-slate-100 text-slate-700 font-bold px-2.5 py-0.5 rounded-full border border-slate-200">Dữ liệu gốc</span>
                 </div>
                 
-                <div class="space-y-4">
+                <div class="space-y-3.5">
                     <!-- Tax Code Input -->
                     <div>
-                        <!-- Header Label Row with Inline Status Indicator -->
-                        <div class="flex items-center justify-between mb-1.5">
+                        <div class="flex items-center justify-between mb-1.5 h-4">
                             <label for="mst-input" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider">
-                                Mã Số Thuế (MST) <span class="text-rose-500">*</span>
+                                Mã Số Thuế (MST) <span class="text-rose-600">*</span>
                             </label>
-                            <!-- Inline lookup status notification on same line -->
                             <span id="lookup-status" class="text-[10px] font-semibold hidden"></span>
                         </div>
 
                         <div class="flex gap-2">
                             <div class="relative flex-grow">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fa-solid fa-id-card text-indigo-400 text-xs"></i>
+                                    <i class="fa-solid fa-id-card text-blue-600 text-xs"></i>
                                 </div>
                                 <input type="text" id="mst-input" placeholder="Nhập mã số thuế doanh nghiệp..." 
-                                       class="glow-input block w-full pl-9 pr-3 py-2 text-xs font-mono font-semibold border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-white text-slate-900 shadow-inner placeholder:text-[10px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
+                                       class="glow-input block w-full pl-9 pr-3 py-2 text-xs font-mono font-semibold border border-slate-300 rounded-xl bg-white text-slate-900 shadow-inner placeholder:text-[11px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
                             </div>
-                            <button id="btn-lookup" class="bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs transition-all flex items-center gap-1.5 shadow-sm hover:shadow-indigo-500/20 min-w-[95px] justify-center border border-indigo-400/20">
+                            <button id="btn-lookup" class="bg-blue-700 hover:bg-blue-800 text-white font-bold px-4 py-2 rounded-xl text-xs transition-colors flex items-center gap-1.5 shadow-sm min-w-[95px] justify-center flex-shrink-0">
                                 <span id="btn-lookup-text">Tra cứu</span>
                                 <i id="btn-lookup-spinner" class="fa-solid fa-circle-notch animate-spin hidden"></i>
                             </button>
@@ -199,146 +399,174 @@
                     <!-- Company Name Input -->
                     <div>
                         <label for="company-name-input" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">
-                            Tên Đơn Vị / Doanh Nghiệp
+                            Tên Đơn Vị / Doanh Nghiệp <span class="text-rose-600">*</span>
                         </label>
                         <div class="relative">
                             <div class="absolute top-2.5 left-3 pointer-events-none">
-                                <i class="fa-solid fa-building text-indigo-400 text-xs"></i>
+                                <i class="fa-solid fa-building text-blue-600 text-xs"></i>
                             </div>
-                            <textarea id="company-name-input" rows="2.5" placeholder="Tên công ty sẽ tự động điền khi tra cứu hoặc tự gõ tay trực tiếp..." 
-                                      class="glow-input block w-full pl-9 pr-3 py-2 text-xs font-medium border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 bg-white text-slate-800 leading-relaxed shadow-inner resize-none placeholder:text-[10px] placeholder:font-normal placeholder:text-slate-400"></textarea>
+                            <textarea id="company-name-input" rows="2" placeholder="Tên công ty tự động điền khi tra cứu hoặc tự gõ tay..." 
+                                      class="glow-input block w-full pl-9 pr-3 py-2 text-xs font-medium border border-slate-300 rounded-xl bg-white text-slate-800 leading-relaxed shadow-inner resize-none placeholder:text-[11px] placeholder:font-normal placeholder:text-slate-400"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Company Address Input -->
+                    <div>
+                        <label for="company-address-input" class="block text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-1.5">
+                            Địa Chỉ Trụ Sở <span class="text-rose-600">*</span> <span class="text-[10px] font-normal lowercase text-slate-400">(đồng bộ vào công văn)</span>
+                        </label>
+                        <div class="relative">
+                            <div class="absolute top-2.5 left-3 pointer-events-none">
+                                <i class="fa-solid fa-location-dot text-blue-600 text-xs"></i>
+                            </div>
+                            <textarea id="company-address-input" rows="2" placeholder="Địa chỉ trụ sở chính trên GPKD (tự động điền khi tra cứu MST)..." 
+                                      class="glow-input block w-full pl-9 pr-3 py-2 text-xs font-medium border border-slate-300 rounded-xl bg-white text-slate-800 leading-relaxed shadow-inner resize-none placeholder:text-[11px] placeholder:font-normal placeholder:text-slate-400"></textarea>
                         </div>
                     </div>
                 </div>
 
                 <!-- Clear Form Button -->
                 <div class="mt-4 pt-3 border-t border-slate-100">
-                    <button id="btn-clear" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-2 rounded-xl text-xs transition-all flex items-center justify-center gap-2 border border-slate-300">
+                    <button id="btn-clear" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs transition-colors flex items-center justify-center gap-2 border border-slate-200">
                         <i class="fa-solid fa-rotate-left text-amber-600 text-xs"></i> Làm mới dữ liệu
                     </button>
                 </div>
             </div>
 
-            <!-- Combined Tabbed Box: HƯỚNG DẪN & CẤU HÌNH GỬI (Fixed dimensions) -->
-            <div class="glass-card rounded-2xl border-2 border-indigo-200 overflow-hidden flex flex-col h-[180px]">
-                
-                <!-- Tab Header -->
-                <div class="flex items-center border-b-2 border-indigo-100 bg-slate-50/90 flex-shrink-0">
-                    <button id="subtab-guide-btn" class="flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white text-indigo-600 border-b-2 border-indigo-600">
+            <!-- Card 2: Hướng Dẫn & Cấu Hình Gửi -->
+            <div class="app-card rounded-2xl overflow-hidden flex flex-col">
+                <div class="flex items-center border-b border-slate-200 bg-slate-50 h-10">
+                    <button id="subtab-guide-btn" class="flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-white text-blue-700 border-b-2 border-blue-700">
                         <i class="fa-solid fa-lightbulb text-amber-500"></i>
-                        <span>Hướng Dẫn</span>
+                        <span>Hướng Dẫn Nhanh</span>
                     </button>
-                    <button id="subtab-config-btn" class="flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
-                        <i class="fa-solid fa-paper-plane text-indigo-500"></i>
+                    <button id="subtab-config-btn" class="flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
+                        <i class="fa-solid fa-paper-plane text-blue-600"></i>
                         <span>Cấu Hình Gửi</span>
                     </button>
                 </div>
 
-                <!-- Tab Content Container -->
-                <div class="p-3.5 flex-grow overflow-y-auto bg-white text-xs text-slate-700 flex flex-col justify-center">
-                    
-                    <!-- TAB 1: HƯỚNG DẪN CONTENT -->
-                    <div id="subtab-guide-content" class="space-y-2">
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</span>
-                            <p class="leading-relaxed text-[11px]">Nhập <strong>Mã số thuế</strong> doanh nghiệp vào ô phía trên và nhấn <strong>Tra cứu</strong>.</p>
+                <div class="p-4 bg-white text-xs text-slate-700 min-h-[126px] flex flex-col justify-center">
+                    <!-- TAB 1: HƯỚNG DẪN -->
+                    <div id="subtab-guide-content" class="space-y-2.5">
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</span>
+                            <p class="leading-relaxed text-[11px]">Nhập <strong>Mã số thuế</strong> doanh nghiệp phía trên và nhấn <strong>Tra cứu</strong> để đồng bộ Tên, Địa chỉ & Tỉnh/TP.</p>
                         </div>
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">2</span>
-                            <p class="leading-relaxed text-[11px]">Hệ thống tự động đồng bộ Tên công ty sang nội dung Email Mẫu & Thông số Hải quan.</p>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">2</span>
+                            <p class="leading-relaxed text-[11px]">Chọn tab <strong>Soạn Email</strong> để gửi yêu cầu, hoặc tab <strong>Công Văn Reset CKS</strong> để tải file Word và in bản cứng.</p>
                         </div>
-                        <div class="flex items-start gap-2">
-                            <span class="w-5 h-5 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">3</span>
-                            <p class="leading-relaxed text-[11px]">Bấm <strong>Copy thư</strong> hoặc <strong>Mở Soạn Trong GMAIL</strong> để hoàn tất gửi bộ phận hỗ trợ.</p>
+                        <div class="flex items-start gap-2.5">
+                            <span class="w-5 h-5 rounded-full bg-blue-100 text-blue-800 font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">3</span>
+                            <p class="leading-relaxed text-[11px]">Gửi email về <strong>bophanhotro@customs.gov.vn</strong> kèm hồ sơ PDF ký số (nếu reset CKS).</p>
                         </div>
                     </div>
 
-                    <!-- TAB 2: CẤU HÌNH GỬI CONTENT -->
+                    <!-- TAB 2: CẤU HÌNH GỬI -->
                     <div id="subtab-config-content" class="hidden space-y-2.5">
-                        <div class="flex items-center justify-between py-1 border-b border-slate-100 gap-2">
+                        <div class="flex items-center justify-between py-1.5 border-b border-slate-100 gap-2">
                             <span class="text-slate-500 font-medium text-[11px]">Người nhận:</span>
                             <div class="flex items-center gap-1.5">
-                                <code class="bg-indigo-50 px-2 py-0.5 rounded font-mono text-indigo-700 text-[11px] font-bold border border-indigo-200">bophanhotro@customs.gov.vn</code>
-                                <button onclick="copyToClipboard('bophanhotro@customs.gov.vn', 'Đã sao chép Email người nhận')" class="text-slate-400 hover:text-indigo-600 p-1 flex-shrink-0" title="Sao chép">
+                                <code class="bg-blue-50 px-2.5 py-0.5 rounded-md font-mono text-blue-800 text-[11px] font-bold border border-blue-200">bophanhotro@customs.gov.vn</code>
+                                <button onclick="copyToClipboard('bophanhotro@customs.gov.vn', 'Đã sao chép Email người nhận')" class="text-slate-400 hover:text-blue-700 p-1 flex-shrink-0" title="Sao chép">
                                     <i class="fa-regular fa-copy text-xs"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between py-1 gap-2">
+                        <div class="flex items-center justify-between py-1.5 gap-2">
                             <span class="text-slate-500 font-medium text-[11px]">Tiêu đề thư:</span>
                             <div class="flex items-center gap-1.5 max-w-[70%]">
-                                <span class="truncate font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200 text-[11px]" title="XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN">XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN</span>
-                                <button onclick="copyToClipboard('XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN', 'Đã sao chép Tiêu đề')" class="text-slate-400 hover:text-indigo-600 p-1 flex-shrink-0" title="Sao chép">
+                                <span id="config-subject-text" class="truncate font-bold text-slate-800 bg-slate-100 px-2.5 py-0.5 rounded-md border border-slate-200 text-[11px]">XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN</span>
+                                <button onclick="copyToClipboard(document.getElementById('config-subject-text').textContent, 'Đã sao chép Tiêu đề')" class="text-slate-400 hover:text-blue-700 p-1 flex-shrink-0" title="Sao chép">
                                     <i class="fa-regular fa-copy text-xs"></i>
                                 </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
         </section>
 
-        <!-- ==================== CỘT 2: KHU VỰC LÀM VIỆC CHÍNH (lg:col-span-5) ==================== -->
-        <section class="lg:col-span-5 flex flex-col">
+        <!-- ==================== CỘT PHẢI: KHU VỰC LÀM VIỆC CHÍNH CỐ ĐỊNH BỐ CỤC (lg:col-span-8) ==================== -->
+        <section class="lg:col-span-8 flex flex-col">
             
-            <div class="glass-card rounded-2xl border-2 border-indigo-200 overflow-hidden flex flex-col">
+            <div class="app-card rounded-2xl overflow-hidden flex flex-col">
                 
-                <!-- Tab Header UI -->
-                <div class="bg-slate-50/90 text-slate-800 flex flex-col sm:flex-row items-stretch justify-between border-b-2 border-indigo-100 flex-shrink-0">
-                    <!-- Tab Switcher Buttons -->
-                    <div class="flex flex-1 justify-start">
-                        <button id="tab-email-btn" class="px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-white text-indigo-600 border-b-2 border-indigo-600 shadow-sm">
-                            <i class="fa-solid fa-envelope-open text-indigo-500"></i>
-                            Soạn Email Mẫu
+                <!-- Main Tab Header UI (Fixed 48px height, zero shift) -->
+                <div class="bg-slate-50 text-slate-800 flex items-stretch justify-between border-b border-slate-200 h-12 flex-shrink-0">
+                    <!-- 3 Main Tabs -->
+                    <div class="flex items-stretch overflow-x-auto">
+                        <button id="tab-email-btn" class="h-full px-4 text-xs font-bold transition-colors flex items-center gap-2 bg-white text-blue-700 border-b-2 border-blue-700 whitespace-nowrap">
+                            <i class="fa-solid fa-envelope-open text-blue-600"></i>
+                            <span>Soạn Email</span>
                         </button>
-                        <button id="tab-params-btn" class="px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent">
-                            <i class="fa-solid fa-gears text-amber-500"></i>
-                            Thông Số Hải Quan
+                        <button id="tab-letter-btn" class="h-full px-4 text-xs font-bold transition-colors flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap">
+                            <i class="fa-solid fa-file-word text-blue-600"></i>
+                            <span>Công Văn Reset CKS & Hồ Sơ</span>
+                        </button>
+                        <button id="tab-params-btn" class="h-full px-4 text-xs font-bold transition-colors flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap">
+                            <i class="fa-solid fa-gears text-teal-600"></i>
+                            <span>Thông Số HQ</span>
                         </button>
                     </div>
 
-                    <!-- Right Quick actions -->
-                    <div class="p-2 flex items-center justify-end bg-slate-50/90">
-                        <button id="btn-copy-all" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 font-bold border border-indigo-200 shadow-sm">
-                            <i class="fa-regular fa-copy"></i> Copy thư
+                    <!-- Right Quick Action (Fixed width/height slot so header never jumps) -->
+                    <div class="px-3 flex items-center justify-end bg-slate-50 flex-shrink-0">
+                        <button id="btn-copy-all" class="bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs px-3.5 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 font-bold border border-blue-200">
+                            <i class="fa-regular fa-copy"></i> <span>Copy thư</span>
                         </button>
-                        <button id="btn-copy-params" class="hidden bg-amber-50 hover:bg-amber-100 text-amber-800 text-xs px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5 font-bold border border-amber-200 shadow-sm">
-                            <i class="fa-regular fa-copy"></i> Copy thông số
+                        <button id="btn-copy-params" class="hidden bg-teal-50 hover:bg-teal-100 text-teal-800 text-xs px-3.5 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 font-bold border border-teal-200">
+                            <i class="fa-regular fa-copy"></i> <span>Copy thông số</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- CONTAINER 1: SOẠN EMAIL TAB -->
+                <!-- ==================== TAB 1: SOẠN EMAIL ==================== -->
                 <div id="tab-email-container" class="flex flex-col bg-white">
-                    <div class="bg-slate-50/60 border-b border-slate-100 p-3 space-y-1.5 flex-shrink-0">
-                        <div class="flex items-center gap-2.5 text-xs">
-                            <span class="text-slate-400 w-12 text-right font-semibold text-xs">Gửi tới:</span>
-                            <div class="bg-white text-indigo-700 border border-indigo-200 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold shadow-sm">
+                    <!-- Email Template Switcher (Fixed 44px height) -->
+                    <div class="bg-slate-50/70 border-b border-slate-200 px-4 h-11 flex items-center justify-between gap-2">
+                        <span class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-layer-group text-blue-600"></i> Chọn mẫu thư:
+                        </span>
+                        <div class="flex items-center gap-2">
+                            <button id="email-type-mst-btn" onclick="setEmailType('mst')" class="px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors">
+                                1. Cập nhật MST mới
+                            </button>
+                            <button id="email-type-cks-btn" onclick="setEmailType('cks')" class="px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-600 border border-slate-300 hover:bg-slate-100 transition-colors">
+                                2. Gửi hồ sơ Reset CKS
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-b border-slate-100 p-3.5 space-y-2 flex-shrink-0">
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="text-slate-400 w-14 text-right font-semibold text-xs">Gửi tới:</span>
+                            <div class="bg-blue-50/70 text-blue-800 border border-blue-200 px-3 py-0.5 rounded-full text-xs font-mono font-bold">
                                 bophanhotro@customs.gov.vn
                             </div>
                         </div>
-                        <div class="flex items-center gap-2.5 text-xs">
-                            <span class="text-slate-400 w-12 text-right font-semibold text-xs">Chủ đề:</span>
-                            <div class="text-amber-900 font-bold truncate bg-amber-50/80 px-2.5 py-0.5 rounded-md border border-amber-200/70 w-full text-[11px]">
+                        <div class="flex items-center gap-3 text-xs">
+                            <span class="text-slate-400 w-14 text-right font-semibold text-xs">Chủ đề:</span>
+                            <div id="email-subject-display" class="text-slate-900 font-bold truncate bg-slate-100 px-3 py-1 rounded-lg border border-slate-200 w-full text-xs">
                                 XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN
                             </div>
                         </div>
                     </div>
 
                     <!-- Live ContentEditable Preview Area -->
-                    <div class="p-3.5 flex flex-col relative bg-white">
+                    <div class="p-4 flex flex-col relative bg-white">
                         <label for="email-preview-area" class="sr-only">Nội dung Email</label>
                         <div id="email-preview-area" contenteditable="true" 
-                             class="glow-input w-full p-4 bg-slate-50/40 text-slate-800 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 font-sans leading-relaxed text-xs overflow-y-auto outline-none shadow-inner min-h-[220px] max-h-[340px]"
+                             class="glow-input w-full p-5 bg-slate-50/50 text-slate-800 border border-slate-300 rounded-xl font-sans leading-relaxed text-[13px] overflow-y-auto shadow-inner h-[310px]"
                              spellcheck="false"></div>
                     </div>
 
-                    <div class="bg-slate-50 border-t border-slate-100 p-3 flex flex-col sm:flex-row justify-between items-center gap-2 flex-shrink-0">
-                        <span class="text-[11px] text-slate-500 font-medium">Hỗ trợ chỉnh sửa nội dung trực tiếp</span>
-                        <div class="w-full sm:w-auto">
-                            <button id="btn-send-gmail" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm hover:shadow-rose-500/20 transition-all border border-red-500/20">
+                    <div class="bg-slate-50 border-t border-slate-200 px-4 h-14 flex justify-between items-center gap-2 flex-shrink-0">
+                        <span class="text-[11px] text-slate-500 font-medium hidden sm:inline">Có thể bấm trực tiếp vào khung trên để chỉnh sửa nội dung trước khi gửi</span>
+                        <div class="w-full sm:w-auto ml-auto">
+                            <button id="btn-send-gmail" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-5 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors">
                                 <i class="fa-brands fa-google text-xs"></i>
                                 Mở Soạn Trong GMAIL
                             </button>
@@ -346,21 +574,219 @@
                     </div>
                 </div>
 
-                <!-- CONTAINER 2: THÔNG SỐ HẢI QUAN TAB -->
+                <!-- ==================== TAB 2: CÔNG VĂN RESET CKS & HỒ SƠ ==================== -->
+                <div id="tab-letter-container" class="hidden flex flex-col bg-white">
+                    
+                    <!-- Unified Sub-Navigation inside Công Văn Tab (Fixed 44px height) -->
+                    <div class="bg-slate-50/70 border-b border-slate-200 px-4 h-11 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <button id="cv-subview-compose-btn" onclick="switchCvSubView('compose')" class="px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-pen-nib"></i> 1. Soạn Công Văn Reset CKS
+                            </button>
+                            <button id="cv-subview-guide-btn" onclick="switchCvSubView('guide')" class="px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-book-open text-teal-600"></i> 2. Văn Bản Hướng Dẫn VNACCS
+                            </button>
+                        </div>
+                        <span class="text-[10.5px] font-semibold text-slate-600 hidden sm:inline">
+                            <i class="fa-solid fa-file-lines text-blue-600 mr-1"></i> Khổ A4 • Font Times New Roman
+                        </span>
+                    </div>
+
+                    <!-- SUB-VIEW A: SOẠN & XUẤT CÔNG VĂN RESET CKS -->
+                    <div id="cv-subview-compose" class="flex flex-col">
+                        <!-- Form Inputs (100% Uniform Font Styling) -->
+                        <div class="p-4 space-y-3 border-b border-slate-200 bg-slate-50/40">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                    <label for="cv-number" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Số công văn <span class="text-rose-600">*</span></label>
+                                    <input type="text" id="cv-number" value="01/2026" placeholder="Ví dụ: 01/2026"
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+
+                                <!-- Searchable Province / City Combobox -->
+                                <div class="relative" id="city-combobox-wrapper">
+                                    <label for="cv-city" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Tỉnh / Thành phố <span class="text-rose-600">*</span></label>
+                                    <div class="relative">
+                                        <input type="text" id="cv-city" value="TP. Hồ Chí Minh" placeholder="Gõ tìm hoặc chọn tỉnh/thành..." autocomplete="off"
+                                               class="cv-uniform-input glow-input w-full pl-3 pr-12 py-2 border border-slate-300 rounded-lg bg-white" />
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-1.5 gap-0.5">
+                                            <button type="button" id="btn-clear-city" title="Xóa để chọn lại"
+                                                    class="w-5 h-5 rounded hover:bg-slate-100 text-slate-400 hover:text-rose-600 flex items-center justify-center text-[10px] transition">
+                                                <i class="fa-solid fa-xmark"></i>
+                                            </button>
+                                            <button type="button" id="btn-toggle-city" title="Mở danh sách Tỉnh / Thành phố"
+                                                    class="w-5 h-5 rounded hover:bg-blue-50 text-slate-500 hover:text-blue-700 flex items-center justify-center text-[10px] transition">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- Dropdown Panel -->
+                                    <div id="city-dropdown-panel" class="hidden absolute left-0 right-0 mt-1 bg-white border border-blue-200 rounded-xl shadow-xl z-40 max-h-56 overflow-y-auto divide-y divide-slate-100"></div>
+                                </div>
+
+                                <div>
+                                    <label for="cv-date" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Ngày lập văn bản <span class="text-rose-600">*</span></label>
+                                    <input type="date" id="cv-date"
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                <div>
+                                    <label for="cv-contact-name" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Người liên hệ <span class="text-rose-600">*</span></label>
+                                    <input type="text" id="cv-contact-name" placeholder="Nhập họ tên người liên hệ..."
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+                                <div>
+                                    <label for="cv-phone" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Điện thoại liên hệ <span class="text-rose-600">*</span></label>
+                                    <input type="text" id="cv-phone" placeholder="Nhập số điện thoại liên hệ..."
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+                                <div>
+                                    <label for="cv-email" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Email nhận phản hồi <span class="text-rose-600">*</span></label>
+                                    <input type="email" id="cv-email" placeholder="Nhập email nhận kết quả..."
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                                <div class="sm:col-span-5">
+                                    <label for="cv-ca-provider" class="block text-[10.5px] font-bold text-slate-600 uppercase mb-1">Nhà cung cấp CKS (Mới) <span class="text-rose-600">*</span></label>
+                                    <input type="text" id="cv-ca-provider" value="ONE-CA SHA-256" list="ca-providers-list" placeholder="Chọn hoặc nhập nhà cung cấp CKS..."
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                    <datalist id="ca-providers-list">
+                                        <option value="ONE-CA SHA-256">
+                                        <option value="EASYCA">
+                                        <option value="VNPT-CA">
+                                        <option value="VIETTEL-CA">
+                                        <option value="BKAV-CA">
+                                        <option value="FPT-CA">
+                                        <option value="NEWCA">
+                                        <option value="EFY-CA">
+                                        <option value="WINCA">
+                                    </datalist>
+                                </div>
+                                <div class="sm:col-span-7">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <label for="cv-serial" class="block text-[10.5px] font-bold text-slate-600 uppercase">Số Serial chứng thư số (Mới) <span class="text-rose-600">*</span></label>
+                                        <button type="button" onclick="cleanSerialInput()" class="text-[10px] font-bold text-blue-700 hover:text-blue-900 hover:underline" title="Xóa dấu hai chấm (:), khoảng trắng và viết hoa toàn bộ">
+                                            <i class="fa-solid fa-broom text-[9px]"></i> Chuẩn hóa Serial
+                                        </button>
+                                    </div>
+                                    <input type="text" id="cv-serial" placeholder="Nhập dãy số Serial chứng thư số mới..."
+                                           class="cv-uniform-input glow-input w-full px-3 py-2 border border-slate-300 rounded-lg bg-white" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Live A4 Preview Box -->
+                        <div class="p-4 bg-slate-100">
+                            <div class="flex items-center justify-between mb-2 px-1">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-slate-600">
+                                    <i class="fa-solid fa-eye text-blue-600 mr-1"></i> Bản xem trước Công văn Reset CKS (Khổ A4)
+                                </span>
+                                <button onclick="openLetterFullModal()" class="text-[11px] font-bold text-blue-700 hover:underline flex items-center gap-1">
+                                    <i class="fa-solid fa-expand"></i> Phóng to toàn trang
+                                </button>
+                            </div>
+                            <div class="bg-white border border-slate-300 rounded-xl shadow-sm h-[280px] overflow-y-auto p-6 sm:p-8">
+                                <div id="letter-mini-preview" class="a4-paper"></div>
+                            </div>
+                        </div>
+
+                        <!-- Footer Actions: View Full, Print, Single Download Word Button -->
+                        <div class="bg-slate-50 border-t border-slate-200 px-4 h-14 flex flex-wrap items-center justify-between gap-2">
+                            <button onclick="openLetterFullModal()" class="inline-flex items-center justify-center gap-1.5 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-3.5 py-2 rounded-xl text-xs font-bold transition-colors shadow-sm">
+                                <i class="fa-solid fa-magnifying-glass-plus text-blue-700"></i>
+                                Xem toàn trang
+                            </button>
+                            <div class="flex items-center gap-2">
+                                <button onclick="printOfficialLetter()" class="inline-flex items-center justify-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors">
+                                    <i class="fa-solid fa-print"></i>
+                                    In Công Văn
+                                </button>
+                                <button onclick="downloadWordDoc()" class="inline-flex items-center justify-center gap-1.5 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors">
+                                    <i class="fa-solid fa-file-word"></i>
+                                    Tải File Word (.doc)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-VIEW B: VĂN BẢN HƯỚNG DẪN VNACCS (ĐÃ XÓA CHECKLIST, CHỈ ĐỂ VĂN BẢN) -->
+                    <div id="cv-subview-guide" class="hidden flex flex-col">
+                        <div class="p-4 sm:p-5 bg-slate-100">
+                            <div class="bg-white border border-slate-300 rounded-xl p-6 sm:p-8 a4-paper shadow-sm h-[488px] overflow-y-auto">
+                                <p class="text-center font-bold uppercase text-slate-900 font-sans text-xs mb-4 pb-2.5 border-b border-slate-200">
+                                    Văn Bản Hướng Dẫn Hỗ Trợ Tài Khoản & Chữ Ký Số VNACCS
+                                </p>
+                                <p class="italic font-semibold mb-2.5">Kính gửi Quý Doanh nghiệp,</p>
+                                <p class="text-justify mb-3">
+                                    Tài khoản/mật khẩu quản trị hệ thống VNACCS và chữ ký số (CKS) tương ứng của doanh nghiệp là các thông tin quan trọng cần được bảo mật. Doanh nghiệp có trách nhiệm quản lý và bảo quản các thông tin này trong quá trình sử dụng.
+                                </p>
+                                <p class="font-bold">1. Trường hợp quên hoặc mất mật khẩu tài khoản quản trị VNACCS:</p>
+                                <p class="text-justify pl-3 mb-2.5">
+                                    Để được hỗ trợ cấp lại mật khẩu, đề nghị doanh nghiệp thực hiện theo hướng dẫn tại mục 3 dưới đây.
+                                </p>
+                                <p class="font-bold">2. Trường hợp chữ ký số (CKS) của tài khoản quản trị VNACCS bị mất hoặc hết hiệu lực:</p>
+                                <p class="text-justify pl-3 mb-1.5">
+                                    Tài khoản cần được thực hiện reset thông tin CKS đã đăng ký trước đó, sau đó doanh nghiệp mới có thể đăng ký lại thông tin CKS mới.
+                                </p>
+                                <p class="text-justify pl-3 mb-2.5">
+                                    Để được hỗ trợ reset thông tin CKS cũ, đề nghị doanh nghiệp thực hiện theo hướng dẫn tại mục 3 dưới đây.
+                                </p>
+                                <p class="font-bold">3. Hồ sơ và cách thức gửi đề nghị hỗ trợ:</p>
+                                <p class="font-bold italic pl-3">a) Hồ sơ (bản scan) gồm:</p>
+                                <p class="pl-5 mb-1">• Công văn đề nghị (ghi rõ: mã số thuế, địa chỉ doanh nghiệp, số điện thoại liên hệ; có chữ ký và đóng dấu của doanh nghiệp);</p>
+                                <p class="pl-5 mb-1">• Giấy chứng nhận đăng ký kinh doanh;</p>
+                                <p class="pl-5 mb-1">• Giấy chứng nhận đăng ký thuế (trường hợp Giấy chứng nhận đăng ký kinh doanh không thể hiện mã số thuế);</p>
+                                <p class="pl-5 mb-2.5">• CMND/CCCD/Hộ chiếu của người đại diện theo pháp luật (thông tin trùng khớp với Giấy chứng nhận đăng ký kinh doanh).</p>
+
+                                <p class="font-bold italic pl-3">b) Hình thức gửi hồ sơ:</p>
+                                <p class="text-justify pl-3 mb-2.5">
+                                    Doanh nghiệp scan toàn bộ hồ sơ bản gốc thành <strong>01 file PDF</strong>, thực hiện <strong>ký số trên file bằng chữ ký số còn hiệu lực</strong> của doanh nghiệp, sau đó gửi về địa chỉ email: <strong class="text-blue-800">bophanhotro@customs.gov.vn</strong>.
+                                </p>
+
+                                <p class="font-bold">4. Thời gian xử lý:</p>
+                                <p class="text-justify pl-3 mb-3">
+                                    Trong vòng <strong>07 ngày làm việc</strong> (không tính thứ 7 Chủ nhật, ngày Lễ Tết) kể từ khi tiếp nhận hồ sơ đầy đủ, hợp lệ; bộ phận xử lý sẽ phản hồi kết quả qua địa chỉ email doanh nghiệp sử dụng để gửi hồ sơ đến BPHT.
+                                </p>
+
+                                <p class="italic text-justify border-t border-slate-200 pt-2.5">
+                                    Mọi vướng mắc, Quý Doanh nghiệp vui lòng liên hệ Tổng đài hỗ trợ: <strong>1900 9299 (nhánh 2)</strong> để được hướng dẫn.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Quick Switch Bar -->
+                        <div class="bg-slate-50 border-t border-slate-200 px-4 h-14 flex items-center justify-between gap-2">
+                            <button onclick="switchCvSubView('compose')" class="text-xs font-bold text-blue-700 hover:underline flex items-center gap-1.5">
+                                <i class="fa-solid fa-arrow-left"></i> Quay lại soạn công văn
+                            </button>
+                            <button onclick="switchTab('email'); setEmailType('cks');" class="inline-flex items-center justify-center gap-1.5 bg-blue-700 hover:bg-blue-800 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-sm transition-colors">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                Chuyển sang soạn Email gửi hồ sơ
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ==================== TAB 3: THÔNG SỐ HẢI QUAN ==================== -->
                 <div id="tab-params-container" class="hidden flex flex-col bg-white">
-                    <div class="p-4 space-y-3">
+                    <div class="p-4 sm:p-5 space-y-3.5">
                         
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                             
                             <!-- MST Sync display -->
                             <div class="md:col-span-2">
                                 <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Mã Số Thuế (Đồng bộ)</label>
-                                <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl py-1.5 px-3 flex items-center justify-between shadow-sm">
+                                <div class="bg-blue-50/60 border border-blue-200 rounded-xl py-2 px-3.5 flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <i class="fa-solid fa-id-card text-indigo-600 text-xs"></i>
-                                        <span id="param-mst-text" class="font-mono text-xs font-bold text-indigo-900">[Chưa có thông tin]</span>
+                                        <i class="fa-solid fa-id-card text-blue-700 text-xs"></i>
+                                        <span id="param-mst-text" class="font-mono text-xs font-bold text-blue-950">[Chưa nhập MST]</span>
                                     </div>
-                                    <span class="text-[10px] bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded-md">Đồng bộ</span>
+                                    <span class="text-[10px] bg-blue-100 text-blue-800 font-bold px-2.5 py-0.5 rounded-md">Đồng bộ</span>
                                 </div>
                             </div>
 
@@ -371,8 +797,8 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-lock-open text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" value="Tchq@123" readonly disabled placeholder=""
-                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-slate-100 text-slate-600 font-mono font-bold select-all cursor-not-allowed shadow-inner" />
+                                    <input type="text" value="Tchq@123" readonly disabled
+                                           class="block w-full pl-8 pr-3 py-2 text-xs border border-slate-200 rounded-xl bg-slate-100 text-slate-700 font-mono font-bold select-all cursor-not-allowed shadow-inner" />
                                 </div>
                             </div>
 
@@ -383,8 +809,8 @@
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                         <i class="fa-solid fa-key text-slate-400 text-xs"></i>
                                     </div>
-                                    <input type="text" value="12345678" readonly disabled placeholder=""
-                                           class="block w-full pl-8 pr-2.5 py-1.5 text-xs border border-slate-200 rounded-xl bg-slate-100 text-slate-600 font-mono font-bold select-all cursor-not-allowed shadow-inner" />
+                                    <input type="text" value="12345678" readonly disabled
+                                           class="block w-full pl-8 pr-3 py-2 text-xs border border-slate-200 rounded-xl bg-slate-100 text-slate-700 font-mono font-bold select-all cursor-not-allowed shadow-inner" />
                                 </div>
                             </div>
 
@@ -393,10 +819,10 @@
                                 <label for="userid1-input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">User ID 1</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-user text-amber-500 text-xs"></i>
+                                        <i class="fa-solid fa-user text-teal-600 text-xs"></i>
                                     </div>
                                     <input type="text" id="userid1-input" value="" placeholder="Ví dụ: USER01..."
-                                           class="glow-input block w-full pl-8 pr-2.5 py-1.5 text-xs border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 bg-white text-amber-900 font-mono font-semibold shadow-inner placeholder:text-[10px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
+                                           class="glow-input block w-full pl-8 pr-3 py-2 text-xs border border-slate-300 rounded-xl bg-white text-slate-900 font-mono font-semibold shadow-inner placeholder:text-[11px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
                                 </div>
                             </div>
 
@@ -405,10 +831,10 @@
                                 <label for="userid2-input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">User ID 2 (Tự động)</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-user-plus text-amber-500 text-xs"></i>
+                                        <i class="fa-solid fa-user-plus text-teal-600 text-xs"></i>
                                     </div>
                                     <input type="text" id="userid2-input" value="" placeholder="Tự động tăng từ User 1..."
-                                           class="glow-input block w-full pl-8 pr-2.5 py-1.5 text-xs border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-amber-500/30 focus:border-amber-500 bg-white text-amber-900 font-mono font-semibold shadow-inner placeholder:text-[10px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
+                                           class="glow-input block w-full pl-8 pr-3 py-2 text-xs border border-slate-300 rounded-xl bg-white text-slate-900 font-mono font-semibold shadow-inner placeholder:text-[11px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
                                 </div>
                             </div>
 
@@ -417,10 +843,10 @@
                                 <label for="terminalid-input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Terminal ID</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-computer text-sky-500 text-xs"></i>
+                                        <i class="fa-solid fa-computer text-blue-600 text-xs"></i>
                                     </div>
                                     <input type="text" id="terminalid-input" value="" placeholder="Nhập Terminal ID..."
-                                           class="glow-input block w-full pl-8 pr-2.5 py-1.5 text-xs border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 bg-white text-sky-900 font-mono font-semibold shadow-inner placeholder:text-[10px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
+                                           class="glow-input block w-full pl-8 pr-3 py-2 text-xs border border-slate-300 rounded-xl bg-white text-slate-900 font-mono font-semibold shadow-inner placeholder:text-[11px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
                                 </div>
                             </div>
 
@@ -429,10 +855,10 @@
                                 <label for="accesskey-input" class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Terminal Access Key</label>
                                 <div class="relative">
                                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fa-solid fa-fingerprint text-sky-500 text-xs"></i>
+                                        <i class="fa-solid fa-fingerprint text-blue-600 text-xs"></i>
                                     </div>
                                     <input type="text" id="accesskey-input" value="" placeholder="Nhập Access Key..."
-                                           class="glow-input block w-full pl-8 pr-2.5 py-1.5 text-xs border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/30 focus:border-sky-500 bg-white text-sky-900 font-mono font-semibold shadow-inner placeholder:text-[10px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
+                                           class="glow-input block w-full pl-8 pr-3 py-2 text-xs border border-slate-300 rounded-xl bg-white text-slate-900 font-mono font-semibold shadow-inner placeholder:text-[11px] placeholder:font-sans placeholder:font-normal placeholder:text-slate-400" />
                                 </div>
                             </div>
 
@@ -441,17 +867,17 @@
                         <!-- Live Parameters Textarea Preview -->
                         <div>
                             <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1">Khung xem trước thông số</label>
-                            <textarea id="params-preview-area" readonly rows="10" placeholder=""
-                                      class="w-full p-3 bg-amber-50/50 text-amber-900 border-2 border-amber-200 rounded-xl font-mono text-[11px] leading-relaxed resize-none cursor-default shadow-inner select-all overflow-hidden"></textarea>
+                            <textarea id="params-preview-area" readonly rows="10"
+                                      class="w-full p-4 bg-slate-50 text-slate-800 border border-slate-300 rounded-xl font-mono text-xs leading-relaxed resize-none cursor-default shadow-inner select-all overflow-hidden"></textarea>
                         </div>
 
                     </div>
 
                     <!-- Footer Action Bar for Parameters -->
-                    <div class="bg-slate-50 border-t border-slate-100 p-3 flex flex-col sm:flex-row justify-between items-center gap-2 flex-shrink-0">
-                        <span class="text-[11px] text-amber-800 font-medium">Sao chép nhanh định dạng chuẩn</span>
-                        <div class="w-full sm:w-auto">
-                            <button id="btn-copy-params-bottom" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-slate-900 font-extrabold px-4 py-2 rounded-xl text-xs shadow-sm hover:shadow-amber-500/20 transition-all border border-amber-300">
+                    <div class="bg-slate-50 border-t border-slate-200 px-4 h-14 flex justify-between items-center gap-2 flex-shrink-0">
+                        <span class="text-[11px] text-slate-600 font-medium hidden sm:inline">Sao chép nhanh định dạng chuẩn bàn giao khách hàng</span>
+                        <div class="w-full sm:w-auto ml-auto">
+                            <button id="btn-copy-params-bottom" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-teal-700 hover:bg-teal-800 text-white font-bold px-5 py-2 rounded-xl text-xs shadow-sm transition-colors">
                                 <i class="fa-regular fa-copy text-xs"></i>
                                 Copy Thông Số
                             </button>
@@ -463,158 +889,87 @@
 
         </section>
 
-        <!-- ==================== CỘT 3: TIỆN ÍCH & LIÊN KẾT HẢI QUAN (lg:col-span-3) ==================== -->
-        <section class="lg:col-span-3 flex flex-col">
-            
-            <div class="glass-card-amber rounded-2xl p-4 border-2 border-amber-200 flex flex-col">
-                <div class="flex items-center justify-between border-b-2 border-amber-100 pb-3 mb-3">
-                    <h2 class="text-xs font-bold text-indigo-950 flex items-center gap-2 uppercase tracking-wider">
-                        <span class="w-6 h-6 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs">
-                            <i class="fa-solid fa-toolbox"></i>
-                        </span>
-                        Tiện Ích & Liên Kết
-                    </h2>
-                    <span class="bg-amber-100 text-amber-800 border border-amber-300 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-                        7 Công cụ
-                    </span>
-                </div>
-
-                <div class="space-y-2">
-                    
-                    <!-- 1. Bộ Cài Java -->
-                    <a href="https://drive.google.com/file/d/1W6rM3ztNnKYdUDlPXjKeFqdR7rSEIrcu/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-rose-100 bg-rose-50/30 hover:bg-rose-50 hover:border-rose-300 text-slate-700 hover:text-rose-700 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-rose-600 group-hover:text-white transition-all duration-200">
-                                <i class="fa-brands fa-java text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Bộ Cài Java</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-rose-600"></i>
-                    </a>
-
-                    <!-- 2. Payment247 -->
-                    <a href="https://drive.google.com/file/d/1T-COxCR2uXnFH7tFIMHkXZZnabNtamho/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-emerald-100 bg-emerald-50/30 hover:bg-emerald-50 hover:border-emerald-300 text-slate-700 hover:text-emerald-700 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-200">
-                                <i class="fa-solid fa-credit-card text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Payment247</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-emerald-600"></i>
-                    </a>
-
-                    <!-- 3. Plugin Payment -->
-                    <a href="https://drive.google.com/file/d/1M42cAayGoQW0QZTx1-s_j-AFhz72DFTe/view?usp=drive_link" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-indigo-100 bg-indigo-50/30 hover:bg-indigo-50 hover:border-indigo-300 text-slate-700 hover:text-indigo-700 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-200">
-                                <i class="fa-solid fa-puzzle-piece text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Plugin Payment</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-indigo-600"></i>
-                    </a>
-
-                     <!-- 4. IE Tab Extension -->
-                    <a href="https://chromewebstore.google.com/detail/ie-tab/hehijbfgiekmjfkfjpbkbammjbdenadd" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-amber-100 bg-amber-50/30 hover:bg-amber-50 hover:border-amber-300 text-slate-700 hover:text-amber-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-white transition-all duration-200">
-                                <i class="fa-brands fa-chrome text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">IE Tab Extension</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-amber-600"></i>
-                    </a>
-
-                    <!-- 5. Trang V5 -->
-                    <a href="http://customs.gov.vn:8228/index.jsp?pageId=181&cid=1194" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-sky-100 bg-sky-50/30 hover:bg-sky-50 hover:border-sky-300 text-slate-700 hover:text-sky-700 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-sky-600 group-hover:text-white transition-all duration-200">
-                                <i class="fa-solid fa-server text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Đăng ký V5</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-sky-600"></i>
-                    </a>
-
-                    <!-- 6. Trang đăng ký -->
-                    <a href="https://dknsd.customs.gov.vn/Pages/dn.aspx" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-yellow-100 bg-yellow-50/30 hover:bg-yellow-50 hover:border-yellow-300 text-slate-700 hover:text-yellow-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-yellow-100 text-yellow-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-yellow-500 group-hover:text-white transition-all duration-200">
-                                <i class="fa-solid fa-circle-info text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Đăng ký Hải Quan</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-yellow-600"></i>
-                    </a>
-
-                    <!-- 7. Quản lý người dùng -->
-                    <a href="https://dksd.customs.gov.vn/client/external/login?redirect=%2F" target="_blank" rel="noopener noreferrer" 
-                       class="utility-item group flex items-center justify-between p-2.5 rounded-xl border-2 border-teal-100 bg-teal-50/30 hover:bg-teal-50 hover:border-teal-300 text-slate-700 hover:text-teal-800 shadow-sm">
-                        <div class="flex items-center gap-3">
-                            <div class="w-7 h-7 rounded-lg bg-teal-100 text-teal-600 flex items-center justify-center flex-shrink-0 text-xs shadow-inner group-hover:scale-110 group-hover:bg-teal-600 group-hover:text-white transition-all duration-200">
-                                <i class="fa-solid fa-users-gear text-xs"></i>
-                            </div>
-                            <span class="text-xs font-bold">Quản lý Người Dùng</span>
-                        </div>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all text-teal-600"></i>
-                    </a>
-
-                </div>
-            </div>
-
-        </section>
-
     </main>
 
-    <!-- FOOTER SECTION -->
-    <footer class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t-2 border-slate-200 py-2.5 px-4 z-40 shadow-md">
-        <div class="max-w-[1650px] mx-auto flex flex-col md:flex-row justify-between items-center gap-2 text-xs">
+    <!-- ==================== FOOTER SECTION ==================== -->
+    <footer class="fixed bottom-0 left-0 right-0 bg-slate-900 text-slate-300 border-t border-slate-800 py-2.5 px-4 z-40 shadow-lg">
+        <div class="max-w-[1640px] mx-auto flex flex-col md:flex-row justify-between items-center gap-2 text-xs">
             
             <!-- Hotline info -->
             <div class="flex items-center gap-2.5">
                 <div class="relative flex items-center justify-center">
-                    <span class="absolute inline-flex h-full w-full rounded-full bg-rose-400/30 animate-ping opacity-75"></span>
-                    <span class="relative bg-gradient-to-br from-rose-500 to-red-600 text-white p-1.5 rounded-xl shadow-sm flex items-center justify-center">
+                    <span class="relative bg-rose-600 text-white p-1.5 rounded-lg shadow-sm flex items-center justify-center">
                         <i class="fa-solid fa-phone text-xs"></i>
                     </span>
                 </div>
                 <div>
                     <p class="text-[9px] uppercase font-bold tracking-wider text-slate-400">Tổng đài Hải Quan</p>
-                    <a href="tel:19009299" class="text-indigo-700 font-extrabold text-xs hover:text-amber-600 transition-all flex items-center gap-1">
-                        1900 9299 <span class="text-[10px] font-semibold text-slate-600 bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200">(Phím 2)</span>
+                    <a href="tel:19009299" class="text-white font-extrabold text-xs hover:text-amber-300 transition-colors flex items-center gap-1.5">
+                        1900 9299 <span class="text-[10px] font-semibold text-slate-300 bg-slate-800 px-1.5 py-0.2 rounded border border-slate-700">(Phím 2)</span>
                     </a>
                 </div>
             </div>
 
             <!-- Central Credit -->
-            <div class="flex items-center gap-2 bg-slate-100 border border-slate-200 px-3.5 py-1 rounded-full text-xs">
-                <span class="text-slate-600 font-medium text-[11px]">
-                    Thiết kế tổng hợp bởi <strong class="text-indigo-700 font-bold">Phan Viết Hưng</strong>
+            <div class="flex items-center gap-2 bg-slate-800/80 border border-slate-700 px-3.5 py-1 rounded-full text-xs">
+                <span class="text-slate-300 font-medium text-[11px]">
+                    Thiết kế tổng hợp bởi <strong class="text-sky-300 font-bold">Phan Viết Hưng</strong>
                 </span>
             </div>
 
             <!-- Công Văn Reset CKS Link -->
             <div class="flex items-center gap-2">
-                <a href="https://www.customs.gov.vn/index.jsp?pageId=16&id=81934&cid=952" 
+                <a href="https://kv03.customs.gov.vn/index.jsp?pageId=2&aid=216785&cid=23" 
                    target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 hover:from-blue-100 hover:to-indigo-100 text-indigo-700 hover:text-indigo-900 border border-indigo-200 px-3.5 py-1.5 rounded-xl font-bold text-xs transition-all shadow-sm">
-                    <i class="fa-solid fa-file-invoice text-amber-500 text-xs"></i>
+                   class="inline-flex items-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-sky-300 hover:text-white border border-slate-700 px-3.5 py-1.5 rounded-xl font-bold text-xs transition-colors">
+                    <i class="fa-solid fa-file-invoice text-amber-400 text-xs"></i>
                     <span>Công văn Reset CKS Hải Quan</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-60"></i>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
                 </a>
             </div>
 
         </div>
     </footer>
 
-    <!-- Custom Notification/Toast Element -->
-    <div id="toast" class="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-slate-900/95 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2.5 text-xs z-50 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none backdrop-blur-md">
+    <!-- ==================== MODAL: XEM TOÀN TRANG CÔNG VĂN A4 (NỀN TRẮNG PHỦ TOÀN VĂN BẢN) ==================== -->
+    <div id="letter-full-modal" class="fixed inset-0 bg-slate-950/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full h-[92vh] flex flex-col shadow-2xl border border-slate-300 overflow-hidden">
+            <!-- Modal Header -->
+            <div class="bg-slate-900 text-white px-5 py-3 flex items-center justify-between flex-shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-file-contract text-amber-400"></i>
+                    <span class="text-xs sm:text-sm font-bold">Xem Toàn Trang – Công Văn Đề Nghị Reset Chữ Ký Số</span>
+                </div>
+                <button onclick="closeLetterFullModal()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body: Nền trắng phủ toàn bộ đoạn văn bản -->
+            <div class="flex-1 overflow-y-auto bg-white">
+                <div id="letter-full-preview" class="a4-paper bg-white w-full max-w-[820px] min-h-full mx-auto px-6 py-8 sm:px-14 sm:py-10"></div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-slate-50 border-t border-slate-200 px-5 py-3 flex flex-wrap items-center justify-between gap-2 flex-shrink-0">
+                <span class="text-[11px] text-slate-500">Bản xem trước chuẩn khổ A4 (tự động căn gói gọn trong 01 trang in).</span>
+                <div class="flex items-center gap-2">
+                    <button onclick="printOfficialLetter()" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold px-4 py-2 rounded-xl transition-colors flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-print"></i> In Trang Này
+                    </button>
+                    <button onclick="closeLetterFullModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-bold px-4 py-2 rounded-xl transition-colors">
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- HIDDEN PRINT CONTAINER -->
+    <div id="print-area" class="hidden"></div>
+
+    <!-- Custom Toast Notification -->
+    <div id="toast" class="fixed bottom-16 left-1/2 transform -translate-x-1/2 bg-slate-900 text-white px-4 py-2.5 rounded-xl shadow-xl border border-slate-700 flex items-center gap-2.5 text-xs z-50 transition-all duration-300 opacity-0 translate-y-10 pointer-events-none">
         <span id="toast-icon" class="text-emerald-400 text-sm"></span>
         <span id="toast-message" class="font-semibold text-slate-100"></span>
     </div>
@@ -623,16 +978,24 @@
     <textarea id="hidden-copy-buffer" class="absolute -top-[9999px] -left-[9999px]" aria-hidden="true"></textarea>
 
     <script>
-        // DOM Elements
+        // ==================== DOM ELEMENTS ====================
         const mstInput = document.getElementById('mst-input');
         const companyNameInput = document.getElementById('company-name-input');
+        const companyAddressInput = document.getElementById('company-address-input');
         const btnLookup = document.getElementById('btn-lookup');
         const btnLookupText = document.getElementById('btn-lookup-text');
         const btnLookupSpinner = document.getElementById('btn-lookup-spinner');
         const lookupStatus = document.getElementById('lookup-status');
         const btnClear = document.getElementById('btn-clear');
         
+        // Header Utilities Dropdown
+        const btnToggleUtilities = document.getElementById('btn-toggle-utilities');
+        const utilitiesDropdownPanel = document.getElementById('utilities-dropdown-panel');
+        const utilitiesChevron = document.getElementById('utilities-chevron');
+
         const emailPreviewArea = document.getElementById('email-preview-area');
+        const emailSubjectDisplay = document.getElementById('email-subject-display');
+        const configSubjectText = document.getElementById('config-subject-text');
         const btnCopyAll = document.getElementById('btn-copy-all');
         const btnSendGmail = document.getElementById('btn-send-gmail');
         
@@ -641,20 +1004,37 @@
         const toastMessage = document.getElementById('toast-message');
         const hiddenCopyBuffer = document.getElementById('hidden-copy-buffer');
 
-        // Sub-tab Elements (Column 1)
+        // Column 1 Sub-tabs
         const subtabGuideBtn = document.getElementById('subtab-guide-btn');
         const subtabConfigBtn = document.getElementById('subtab-config-btn');
         const subtabGuideContent = document.getElementById('subtab-guide-content');
         const subtabConfigContent = document.getElementById('subtab-config-content');
 
-        // Main Tab Switching Elements
+        // Main Tabs
         const tabEmailBtn = document.getElementById('tab-email-btn');
+        const tabLetterBtn = document.getElementById('tab-letter-btn');
         const tabParamsBtn = document.getElementById('tab-params-btn');
         const tabEmailContainer = document.getElementById('tab-email-container');
+        const tabLetterContainer = document.getElementById('tab-letter-container');
         const tabParamsContainer = document.getElementById('tab-params-container');
         const btnCopyParamsHeader = document.getElementById('btn-copy-params');
 
-        // Parameter Elements
+        // Official Letter Elements
+        const cvNumberInput = document.getElementById('cv-number');
+        const cvCityInput = document.getElementById('cv-city');
+        const cityDropdownPanel = document.getElementById('city-dropdown-panel');
+        const btnClearCity = document.getElementById('btn-clear-city');
+        const btnToggleCity = document.getElementById('btn-toggle-city');
+        const cvDateInput = document.getElementById('cv-date');
+        const cvContactNameInput = document.getElementById('cv-contact-name');
+        const cvPhoneInput = document.getElementById('cv-phone');
+        const cvEmailInput = document.getElementById('cv-email');
+        const cvCaProviderInput = document.getElementById('cv-ca-provider');
+        const cvSerialInput = document.getElementById('cv-serial');
+        const letterMiniPreview = document.getElementById('letter-mini-preview');
+        const letterFullPreview = document.getElementById('letter-full-preview');
+
+        // Customs Parameters Elements
         const paramMstText = document.getElementById('param-mst-text');
         const userid1Input = document.getElementById('userid1-input');
         const userid2Input = document.getElementById('userid2-input');
@@ -663,10 +1043,27 @@
         const paramsPreviewArea = document.getElementById('params-preview-area');
         const btnCopyParamsBottom = document.getElementById('btn-copy-params-bottom');
 
-        // Application State
+        // ==================== INITIAL DATE & STATE ====================
+        const today = new Date();
+        const yyyy = String(today.getFullYear());
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        cvDateInput.value = `${yyyy}-${mm}-${dd}`;
+        cvNumberInput.value = `01/${yyyy}`;
+
         let state = {
             mst: '',
             companyName: '',
+            companyAddress: '',
+            emailType: 'mst',
+            cvNumber: `01/${yyyy}`,
+            cvCity: 'TP. Hồ Chí Minh',
+            cvDate: `${yyyy}-${mm}-${dd}`,
+            cvContactName: '',
+            cvPhone: '',
+            cvEmail: '',
+            cvCaProvider: 'ONE-CA SHA-256',
+            cvSerial: '',
             userId1: '',
             userId2: '',
             terminalId: '',
@@ -674,9 +1071,304 @@
         };
 
         const emailRecipient = 'bophanhotro@customs.gov.vn';
-        const emailSubject = 'XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN';
+        const STORAGE_KEY = 'customs_assistant_draft_v4_3';
 
-        // Helper: Format DateTime
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        // ==================== HEADER UTILITIES DROPDOWN CONTROLLER ====================
+        function toggleUtilitiesDropdown(forceOpen = null) {
+            const isCurrentlyHidden = utilitiesDropdownPanel.classList.contains('hidden');
+            const shouldOpen = forceOpen !== null ? forceOpen : isCurrentlyHidden;
+
+            if (shouldOpen) {
+                utilitiesDropdownPanel.classList.remove('hidden');
+                utilitiesChevron.classList.add('rotate-180');
+                btnToggleUtilities.setAttribute('aria-expanded', 'true');
+            } else {
+                utilitiesDropdownPanel.classList.add('hidden');
+                utilitiesChevron.classList.remove('rotate-180');
+                btnToggleUtilities.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        btnToggleUtilities.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleUtilitiesDropdown();
+        });
+
+        document.addEventListener('click', (e) => {
+            const utilWrapper = document.getElementById('utilities-menu-wrapper');
+            if (utilWrapper && !utilWrapper.contains(e.target)) {
+                toggleUtilitiesDropdown(false);
+            }
+            const cityWrapper = document.getElementById('city-combobox-wrapper');
+            if (cityWrapper && !cityWrapper.contains(e.target)) {
+                closeCityDropdown();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleUtilitiesDropdown(false);
+                closeCityDropdown();
+                closeLetterFullModal();
+            }
+        });
+
+        // ==================== 34 VIETNAM PROVINCES / CITIES DATA ====================
+        const VIETNAM_PROVINCES = [
+            { name: 'TP. Hồ Chí Minh', group: 'Thành phố trực thuộc TW', keywords: 'ho chi minh hcm sai gon binh duong ba ria vung tau brvt' },
+            { name: 'TP. Hà Nội', group: 'Thành phố trực thuộc TW', keywords: 'ha noi thu do hn' },
+            { name: 'TP. Đà Nẵng', group: 'Thành phố trực thuộc TW', keywords: 'da nang quang nam dn' },
+            { name: 'TP. Hải Phòng', group: 'Thành phố trực thuộc TW', keywords: 'hai phong hai duong hp' },
+            { name: 'TP. Cần Thơ', group: 'Thành phố trực thuộc TW', keywords: 'can tho soc trang hau giang ct' },
+            { name: 'TP. Huế', group: 'Thành phố trực thuộc TW', keywords: 'hue thua thien hue' },
+            { name: 'Tỉnh An Giang', group: 'Tỉnh', keywords: 'an giang kien giang' },
+            { name: 'Tỉnh Bắc Ninh', group: 'Tỉnh', keywords: 'bac ninh bac giang' },
+            { name: 'Tỉnh Cà Mau', group: 'Tỉnh', keywords: 'ca mau bac lieu' },
+            { name: 'Tỉnh Cao Bằng', group: 'Tỉnh', keywords: 'cao bang' },
+            { name: 'Tỉnh Đắk Lắk', group: 'Tỉnh', keywords: 'dak lak daklak phu yen' },
+            { name: 'Tỉnh Điện Biên', group: 'Tỉnh', keywords: 'dien bien' },
+            { name: 'Tỉnh Đồng Nai', group: 'Tỉnh', keywords: 'dong nai binh phuoc' },
+            { name: 'Tỉnh Đồng Tháp', group: 'Tỉnh', keywords: 'dong thap tien giang' },
+            { name: 'Tỉnh Gia Lai', group: 'Tỉnh', keywords: 'gia lai binh dinh' },
+            { name: 'Tỉnh Hà Tĩnh', group: 'Tỉnh', keywords: 'ha tinh' },
+            { name: 'Tỉnh Hưng Yên', group: 'Tỉnh', keywords: 'hung yen thai binh' },
+            { name: 'Tỉnh Khánh Hòa', group: 'Tỉnh', keywords: 'khanh hoa ninh thuan nha trang' },
+            { name: 'Tỉnh Lai Châu', group: 'Tỉnh', keywords: 'lai chau' },
+            { name: 'Tỉnh Lâm Đồng', group: 'Tỉnh', keywords: 'lam dong dak nong binh thuan da lat' },
+            { name: 'Tỉnh Lạng Sơn', group: 'Tỉnh', keywords: 'lang son' },
+            { name: 'Tỉnh Lào Cai', group: 'Tỉnh', keywords: 'lao cai yen bai' },
+            { name: 'Tỉnh Nghệ An', group: 'Tỉnh', keywords: 'nghe an vinh' },
+            { name: 'Tỉnh Ninh Bình', group: 'Tỉnh', keywords: 'ninh binh ha nam nam dinh' },
+            { name: 'Tỉnh Phú Thọ', group: 'Tỉnh', keywords: 'phu tho vinh phuc hoa binh' },
+            { name: 'Tỉnh Quảng Ngãi', group: 'Tỉnh', keywords: 'quang ngai kon tum' },
+            { name: 'Tỉnh Quảng Ninh', group: 'Tỉnh', keywords: 'quang ninh ha long' },
+            { name: 'Tỉnh Quảng Trị', group: 'Tỉnh', keywords: 'quang tri quang binh' },
+            { name: 'Tỉnh Sơn La', group: 'Tỉnh', keywords: 'son la' },
+            { name: 'Tỉnh Tây Ninh', group: 'Tỉnh', keywords: 'tay ninh long an' },
+            { name: 'Tỉnh Thái Nguyên', group: 'Tỉnh', keywords: 'thai nguyen bac kan' },
+            { name: 'Tỉnh Thanh Hóa', group: 'Tỉnh', keywords: 'thanh hoa' },
+            { name: 'Tỉnh Tuyên Quang', group: 'Tỉnh', keywords: 'tuyen quang ha giang' },
+            { name: 'Tỉnh Vĩnh Long', group: 'Tỉnh', keywords: 'vinh long ben tre tra vinh' }
+        ];
+
+        function removeVietnameseTones(str) {
+            if (!str) return '';
+            return str
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/Đ/g, 'D')
+                .toLowerCase()
+                .trim();
+        }
+
+        function detectProvinceFromAddress(address) {
+            if (!address) return null;
+            const normalizedAddr = removeVietnameseTones(address);
+            for (const item of VIETNAM_PROVINCES) {
+                const namePlain = removeVietnameseTones(item.name.replace(/^(TP\.|Tỉnh)\s+/i, ''));
+                if (normalizedAddr.includes(namePlain)) {
+                    return item.name;
+                }
+            }
+            for (const item of VIETNAM_PROVINCES) {
+                const kwList = item.keywords.split(' ');
+                for (let i = 0; i < kwList.length - 1; i++) {
+                    const pair = kwList[i] + ' ' + kwList[i + 1];
+                    if (pair.length >= 6 && normalizedAddr.includes(pair)) {
+                        return item.name;
+                    }
+                }
+            }
+            return null;
+        }
+
+        let highlightedCityIndex = -1;
+
+        function renderCityDropdown(filterText = '') {
+            const q = removeVietnameseTones(filterText);
+            const filtered = VIETNAM_PROVINCES.filter(p => {
+                if (!q) return true;
+                return removeVietnameseTones(p.name).includes(q) || p.keywords.includes(q);
+            });
+
+            highlightedCityIndex = -1;
+
+            if (filtered.length === 0) {
+                cityDropdownPanel.innerHTML = `
+                    <div class="p-3 text-[11px] text-slate-500 text-center">
+                        Không có trong danh sách gợi ý.<br>
+                        <span class="text-blue-700 font-semibold">Bạn vẫn có thể giữ nguyên nội dung đang gõ!</span>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            let currentGroup = '';
+
+            filtered.forEach((item, idx) => {
+                if (item.group !== currentGroup) {
+                    currentGroup = item.group;
+                    html += `<div class="px-3 py-1 bg-slate-100 text-[9.5px] font-extrabold uppercase tracking-wider text-slate-500 sticky top-0">${currentGroup}</div>`;
+                }
+                const isSelected = state.cvCity.trim().toLowerCase() === item.name.toLowerCase();
+                html += `
+                    <button type="button" data-city-name="${escapeHtml(item.name)}" data-idx="${idx}"
+                            class="city-option-btn w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-blue-50 transition ${isSelected ? 'bg-blue-50 text-blue-800 font-bold' : 'text-slate-700 font-medium'}">
+                        <span>${escapeHtml(item.name)}</span>
+                        ${isSelected ? '<i class="fa-solid fa-check text-blue-700 text-[10px]"></i>' : ''}
+                    </button>
+                `;
+            });
+
+            cityDropdownPanel.innerHTML = html;
+
+            cityDropdownPanel.querySelectorAll('.city-option-btn').forEach(btn => {
+                btn.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    const chosen = btn.getAttribute('data-city-name');
+                    selectCityOption(chosen);
+                });
+            });
+        }
+
+        function openCityDropdown(showAll = false) {
+            renderCityDropdown(showAll ? '' : cvCityInput.value);
+            cityDropdownPanel.classList.remove('hidden');
+        }
+
+        function closeCityDropdown() {
+            cityDropdownPanel.classList.add('hidden');
+            highlightedCityIndex = -1;
+        }
+
+        function selectCityOption(cityName) {
+            state.cvCity = cityName;
+            cvCityInput.value = cityName;
+            clearFieldError(cvCityInput);
+            closeCityDropdown();
+            saveDraft();
+            syncUI();
+        }
+
+        // ==================== VALIDATION FOR OFFICIAL LETTER ====================
+        function getMandatoryLetterFields() {
+            return [
+                { key: 'mst', label: 'Mã số thuế (MST)', el: mstInput, val: state.mst },
+                { key: 'companyName', label: 'Tên đơn vị / Doanh nghiệp', el: companyNameInput, val: state.companyName },
+                { key: 'companyAddress', label: 'Địa chỉ trụ sở', el: companyAddressInput, val: state.companyAddress },
+                { key: 'cvNumber', label: 'Số công văn', el: cvNumberInput, val: state.cvNumber },
+                { key: 'cvCity', label: 'Tỉnh / Thành phố', el: cvCityInput, val: state.cvCity },
+                { key: 'cvDate', label: 'Ngày lập văn bản', el: cvDateInput, val: state.cvDate },
+                { key: 'cvContactName', label: 'Người liên hệ', el: cvContactNameInput, val: state.cvContactName },
+                { key: 'cvPhone', label: 'Điện thoại liên hệ', el: cvPhoneInput, val: state.cvPhone },
+                { key: 'cvEmail', label: 'Email nhận phản hồi', el: cvEmailInput, val: state.cvEmail },
+                { key: 'cvCaProvider', label: 'Nhà cung cấp CKS (Mới)', el: cvCaProviderInput, val: state.cvCaProvider },
+                { key: 'cvSerial', label: 'Số Serial chứng thư số (Mới)', el: cvSerialInput, val: state.cvSerial }
+            ];
+        }
+
+        function clearFieldError(el) {
+            if (el) el.classList.remove('field-error');
+        }
+
+        function validateOfficialLetterFields() {
+            const fields = getMandatoryLetterFields();
+            const missing = [];
+
+            fields.forEach(f => {
+                if (!f.val || String(f.val).trim() === '') {
+                    missing.push(f);
+                    if (f.el) f.el.classList.add('field-error');
+                } else {
+                    if (f.el) f.el.classList.remove('field-error');
+                }
+            });
+
+            if (missing.length > 0) {
+                switchTab('letter');
+                switchCvSubView('compose');
+
+                const first = missing[0];
+                if (first.el) {
+                    first.el.focus();
+                }
+
+                const previewNames = missing.slice(0, 3).map(m => m.label).join(', ');
+                const extra = missing.length > 3 ? ` (+${missing.length - 3} mục khác)` : '';
+                showToast(`Vui lòng nhập đầy đủ: ${previewNames}${extra}`, 'error');
+                return false;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.cvEmail.trim())) {
+                cvEmailInput.classList.add('field-error');
+                cvEmailInput.focus();
+                showToast('Email nhận phản hồi chưa đúng định dạng (VD: ten@congty.vn)', 'error');
+                return false;
+            }
+
+            return true;
+        }
+
+        function cleanSerialInput() {
+            const raw = cvSerialInput.value || '';
+            const cleaned = raw.replace(/[\s:\-]+/g, '').toUpperCase();
+            cvSerialInput.value = cleaned;
+            state.cvSerial = cleaned;
+            if (cleaned) clearFieldError(cvSerialInput);
+            saveDraft();
+            syncUI();
+            if (cleaned) {
+                showToast(`Đã chuẩn hóa Serial (${cleaned.length} ký tự)`, 'success');
+            }
+        }
+
+        // ==================== DRAFT PERSISTENCE ====================
+        function saveDraft() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            } catch (e) { /* Ignore storage quota errors */ }
+        }
+
+        function loadDraft() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (!raw) return;
+                const saved = JSON.parse(raw);
+                if (saved && typeof saved === 'object') {
+                    state = { ...state, ...saved };
+                    mstInput.value = state.mst || '';
+                    companyNameInput.value = state.companyName || '';
+                    companyAddressInput.value = state.companyAddress || '';
+                    cvNumberInput.value = state.cvNumber || `01/${yyyy}`;
+                    cvCityInput.value = state.cvCity || 'TP. Hồ Chí Minh';
+                    cvDateInput.value = state.cvDate || `${yyyy}-${mm}-${dd}`;
+                    cvContactNameInput.value = state.cvContactName || '';
+                    cvPhoneInput.value = state.cvPhone || '';
+                    cvEmailInput.value = state.cvEmail || '';
+                    cvCaProviderInput.value = state.cvCaProvider || 'ONE-CA SHA-256';
+                    cvSerialInput.value = state.cvSerial || '';
+                    userid1Input.value = state.userId1 || '';
+                    userid2Input.value = state.userId2 || '';
+                    terminalidInput.value = state.terminalId || '';
+                    accesskeyInput.value = state.terminalAccessKey || '';
+                    setEmailType(state.emailType || 'mst');
+                }
+            } catch (e) { /* Ignore parse errors */ }
+        }
+
+        // ==================== HELPER FUNCTIONS ====================
         function formatDateTime(date) {
             const day = String(date.getDate()).padStart(2, '0');
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -687,7 +1379,22 @@
             return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
         }
 
-        // Helper: Auto-increment User ID
+        function parseVietnameseDateParts(isoDateStr) {
+            if (!isoDateStr) {
+                const now = new Date();
+                return {
+                    day: String(now.getDate()).padStart(2, '0'),
+                    month: String(now.getMonth() + 1).padStart(2, '0'),
+                    year: String(now.getFullYear())
+                };
+            }
+            const parts = isoDateStr.split('-');
+            if (parts.length === 3) {
+                return { year: parts[0], month: parts[1], day: parts[2] };
+            }
+            return { day: '...', month: '...', year: yyyy };
+        }
+
         function autoIncrementUserId(val) {
             if (!val) return '';
             const match = val.match(/^(.*?)(\d+)$/);
@@ -701,11 +1408,34 @@
             return val ? val + '2' : '';
         }
 
-        // Template generator for Email
-        function generateEmailBody(mst, companyName) {
-            const mstBold = mst ? `<strong class="text-indigo-700 font-bold">${mst}</strong>` : `<span class="text-rose-500 font-bold">[Chưa nhập MST]</span>`;
-            const companyBold = companyName ? `<strong class="text-amber-800 font-bold">${companyName}</strong>` : `<span class="text-rose-500 font-bold">[Chưa có tên đơn vị]</span>`;
+        function getCurrentEmailSubject() {
+            if (state.emailType === 'cks') {
+                const mstTag = state.mst ? ` - MST ${state.mst}` : '';
+                return `ĐỀ NGHỊ RESET VÀ CẬP NHẬT THÔNG TIN CHỮ KÝ SỐ VNACCS${mstTag}`;
+            }
+            return 'XIN CẬP NHẬT MST LÊN HỆ THỐNG HẢI QUAN';
+        }
+
+        // ==================== EMAIL TEMPLATE GENERATOR ====================
+        function generateEmailBody() {
+            const mstBold = state.mst ? `<strong class="text-blue-800 font-bold">${escapeHtml(state.mst)}</strong>` : `<span class="text-rose-600 font-bold">[Chưa nhập MST]</span>`;
+            const companyBold = state.companyName ? `<strong class="text-slate-900 font-bold">${escapeHtml(state.companyName)}</strong>` : `<span class="text-rose-600 font-bold">[Chưa có tên đơn vị]</span>`;
             
+            if (state.emailType === 'cks') {
+                const phoneText = state.cvPhone ? `<strong>${escapeHtml(state.cvPhone)}</strong>` : `[Số điện thoại liên hệ]`;
+                return `Kính gửi Bộ phận Hỗ trợ – Tổng cục Hải quan,<br><br>` +
+                       `Doanh nghiệp chúng tôi xin gửi kèm theo email này <strong>01 file PDF đã được ký số điện tử</strong> bao gồm đầy đủ hồ sơ đề nghị hỗ trợ <strong>reset thông tin Chữ ký số (CKS) cũ và cập nhật chứng thư số mới</strong> trên hệ thống VNACCS:<br>` +
+                       `1. Công văn đề nghị reset và cập nhật thông tin chữ ký số (đã ký tên, đóng dấu doanh nghiệp);<br>` +
+                       `2. Giấy chứng nhận đăng ký kinh doanh / Giấy chứng nhận đăng ký thuế;<br>` +
+                       `3. CMND/CCCD/Hộ chiếu của người đại diện theo pháp luật.<br><br>` +
+                       `<strong>Thông tin doanh nghiệp:</strong><br>` +
+                       `• Tên đơn vị: ${companyBold}<br>` +
+                       `• Mã số thuế: ${mstBold}<br>` +
+                       `• Điện thoại liên hệ: ${phoneText}<br><br>` +
+                       `Kính mong Quý cơ quan xem xét, hỗ trợ cập nhật để doanh nghiệp sớm tiếp tục thực hiện thủ tục hải quan điện tử.<br>` +
+                       `Trân trọng cảm ơn!`;
+            }
+
             return `Kính gửi Tổng cục Hải Quan,<br><br>` +
                    `Đơn vị đăng ký tài khoản trên hệ thống hải quan trên trang: "https://dknsd.customs.gov.vn/Pages/dn.aspx" báo lỗi <strong>“Mã số thuế không tồn tại”</strong>. Nhờ anh/chị hỗ trợ cập nhập giúp đơn vị MST trên hệ thống Hải Quan.<br><br>` +
                    `Thông tin đơn vị:<br>` +
@@ -714,7 +1444,196 @@
                    `Trân trọng cảm ơn!`;
         }
 
-        // Customs Parameters generator
+        function setEmailType(type) {
+            state.emailType = type;
+            const btnMst = document.getElementById('email-type-mst-btn');
+            const btnCks = document.getElementById('email-type-cks-btn');
+
+            if (type === 'mst') {
+                btnMst.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors";
+                btnCks.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-600 border border-slate-300 hover:bg-slate-100 transition-colors";
+            } else {
+                btnCks.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors";
+                btnMst.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-600 border border-slate-300 hover:bg-slate-100 transition-colors";
+            }
+            saveDraft();
+            updateEmailPreview();
+        }
+
+        // ==================== OFFICIAL LETTER GENERATOR (CHUẨN 01 TRANG A4) ====================
+        function buildOfficialLetterHtml() {
+            const companyUpper = state.companyName ? escapeHtml(state.companyName.trim().toUpperCase()) : 'CÔNG TY ...................................................';
+            const companyNormal = state.companyName ? escapeHtml(state.companyName.trim()) : '...................................................';
+            const mst = state.mst ? escapeHtml(state.mst.trim()) : '...................................';
+            const address = state.companyAddress ? escapeHtml(state.companyAddress.trim()) : '......................................................................................';
+            const contact = state.cvContactName ? escapeHtml(state.cvContactName.trim()) : '.........................................';
+            const phone = state.cvPhone ? escapeHtml(state.cvPhone.trim()) : '...........................';
+            const email = state.cvEmail ? escapeHtml(state.cvEmail.trim()) : '.........................................';
+            const caProvider = state.cvCaProvider ? escapeHtml(state.cvCaProvider.trim().toUpperCase()) : 'ONE-CA SHA-256';
+            const serial = state.cvSerial ? escapeHtml(state.cvSerial.trim().toUpperCase()) : '....................................................................';
+            const cvNum = state.cvNumber ? escapeHtml(state.cvNumber.trim()) : '01/2026';
+            const city = state.cvCity ? escapeHtml(state.cvCity.trim()) : 'TP. Hồ Chí Minh';
+            const dateParts = parseVietnameseDateParts(state.cvDate);
+            const f = "font-family: 'Times New Roman', Times, serif;";
+
+            return `
+                <div style="${f} font-size: 12.5pt; line-height: 1.35; color: #000000; background: #ffffff;">
+                    <table style="width: 100%; border-collapse: collapse; border: none; margin-bottom: 10pt; ${f}">
+                        <tr>
+                            <td style="width: 46%; vertical-align: top; text-align: center; padding-right: 6pt; ${f}">
+                                <p style="margin: 0; font-weight: bold; font-size: 11.5pt; text-transform: uppercase; ${f}">${companyUpper}</p>
+                                <p style="margin: 2pt 0 3pt 0; font-size: 11.5pt; ${f}">Số: ${cvNum}</p>
+                                <p style="margin: 0 auto 5pt auto; width: 45%; border-bottom: 1px solid #000; height: 1px; ${f}"></p>
+                                <p style="margin: 0; font-size: 10.5pt; font-style: italic; text-align: left; ${f}">V/v: Đề nghị reset và cập nhật thông tin chữ ký số trên hệ thống VNACCS</p>
+                            </td>
+                            <td style="width: 54%; vertical-align: top; text-align: center; padding-left: 6pt; ${f}">
+                                <p style="margin: 0; font-weight: bold; font-size: 11.5pt; ${f}">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</p>
+                                <p style="margin: 2pt 0 3pt 0; font-weight: bold; font-size: 12.5pt; ${f}">Độc lập – Tự do – Hạnh phúc</p>
+                                <p style="margin: 0 auto 5pt auto; width: 55%; border-bottom: 1px solid #000; height: 1px; ${f}"></p>
+                                <p style="margin: 0; font-style: italic; font-size: 12pt; ${f}">${city}, ngày ${dateParts.day} tháng ${dateParts.month} năm ${dateParts.year}</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <p style="text-align: center; font-weight: bold; font-size: 12.5pt; margin: 10pt 0 8pt 0; ${f}">
+                        Kính gửi: TỔNG CỤC HẢI QUAN
+                    </p>
+
+                    <p style="font-weight: bold; font-size: 12.5pt; margin: 5pt 0 3pt 0; ${f}">1. Thông tin đơn vị:</p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Tên đơn vị: <strong style="${f}">${companyUpper}</strong></p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Mã số thuế: <strong style="${f}">${mst}</strong></p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Địa chỉ trụ sở: ${address}</p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Người liên hệ: ${contact}</p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Điện thoại: ${phone}</p>
+                    <p style="margin: 1.5pt 0 5pt 16pt; font-size: 12.5pt; ${f}">- Email: ${email}</p>
+
+                    <p style="font-weight: bold; font-size: 12.5pt; margin: 5pt 0 3pt 0; ${f}">2. Lý do đề nghị:</p>
+                    <p style="text-align: justify; text-indent: 22pt; font-size: 12.5pt; margin: 1.5pt 0 5pt 0; ${f}">
+                        Trong thời gian qua, <strong style="${f}">${companyNormal}</strong> đã sử dụng chữ ký số để thực hiện thủ tục hải quan điện tử trên hệ thống VNACCS/VCIS. Tuy nhiên, hiện nay chữ ký số (Token) cũ đã bị hư hỏng/hết hiệu lực/thay đổi sang thiết bị chứng thư số mới, dẫn đến việc đơn vị không thể tiếp tục đăng nhập và ký số truyền dữ liệu tờ khai hải quan.
+                    </p>
+
+                    <p style="font-weight: bold; font-size: 12.5pt; margin: 5pt 0 3pt 0; ${f}">3. Nội dung đề nghị:</p>
+                    <p style="text-align: justify; text-indent: 22pt; font-size: 12.5pt; margin: 1.5pt 0 3pt 0; ${f}">
+                        Để đảm bảo hoạt động xuất nhập khẩu không bị gián đoạn, kính đề nghị Tổng cục Hải quan (Bộ phận Hỗ trợ) xem xét, hỗ trợ đơn vị:
+                    </p>
+                    <p style="margin: 2pt 0 5pt 16pt; font-size: 12.5pt; ${f}">- Thực hiện reset thông tin chữ ký số (CKS) cũ đã đăng ký trên hệ thống VNACCS để doanh nghiệp cập nhật thông tin chứng thư số mới.</p>
+
+                    <p style="font-weight: bold; font-size: 12.5pt; margin: 6pt 0 3pt 0; ${f}">Thông tin Chữ ký số mới (Token mới) như sau:</p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Tên đơn vị: <strong style="${f}">${companyUpper}</strong></p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Mã số thuế: <strong style="${f}">${mst}</strong></p>
+                    <p style="margin: 1.5pt 0 1.5pt 16pt; font-size: 12.5pt; ${f}">- Số Serial chứng thư số (Mới): <strong style="${f}">${serial}</strong></p>
+                    <p style="margin: 1.5pt 0 6pt 16pt; font-size: 12.5pt; ${f}">- Nhà cung cấp: <strong style="${f}">${caProvider}</strong></p>
+
+                    <p style="text-align: justify; text-indent: 22pt; font-size: 12.5pt; margin: 4pt 0 4pt 0; ${f}">
+                        Đơn vị xin cam kết chịu hoàn toàn trách nhiệm trước pháp luật về tính chính xác của các thông tin kê khai trên và quản lý, sử dụng chữ ký số theo đúng quy định.
+                    </p>
+                    <p style="text-indent: 22pt; font-size: 12.5pt; margin: 3pt 0 10pt 0; ${f}">Trân trọng kính chào./.</p>
+
+                    <table style="width: 100%; border-collapse: collapse; border: none; margin-top: 6pt; ${f}">
+                        <tr>
+                            <td style="width: 45%; vertical-align: top; font-size: 11pt; ${f}">
+                                <p style="margin: 0; font-weight: bold; font-style: italic; ${f}">Nơi nhận:</p>
+                                <p style="margin: 2pt 0 0 0; ${f}">- Như trên;</p>
+                                <p style="margin: 2pt 0 0 0; ${f}">- Lưu: VT.</p>
+                            </td>
+                            <td style="width: 55%; vertical-align: top; text-align: center; ${f}">
+                                <p style="margin: 0; font-weight: bold; font-size: 11.5pt; ${f}">ĐẠI DIỆN THEO PHÁP LUẬT CỦA DOANH NGHIỆP</p>
+                                <p style="margin: 2pt 0 40pt 0; font-style: italic; font-size: 11pt; ${f}">(Ký, đóng dấu và ghi rõ họ tên)</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        }
+
+        function updateLetterPreviews() {
+            const html = buildOfficialLetterHtml();
+            letterMiniPreview.innerHTML = html;
+            letterFullPreview.innerHTML = html;
+        }
+
+        // ==================== DOWNLOAD WORD (.DOC) & 1-PAGE PRINT ====================
+        function downloadWordDoc() {
+            if (!validateOfficialLetterFields()) return;
+
+            const innerContent = buildOfficialLetterHtml();
+            const wordHtml = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office'
+                      xmlns:w='urn:schemas-microsoft-com:office:word'
+                      xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Công văn đề nghị reset và cập nhật thông tin chữ ký số</title>
+                    <!--[if gte mso 9]>
+                    <xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml>
+                    <![endif]-->
+                    <style>
+                        @page WordSection1 {
+                            size: 595.3pt 841.9pt;
+                            margin: 42.5pt 42.5pt 42.5pt 56.7pt;
+                            mso-header-margin: 35.4pt;
+                            mso-footer-margin: 35.4pt;
+                            mso-paper-source: 0;
+                        }
+                        div.WordSection1 {
+                            page: WordSection1;
+                        }
+                        * {
+                            font-family: "Times New Roman", Times, serif !important;
+                            mso-ascii-font-family: "Times New Roman";
+                            mso-hansi-font-family: "Times New Roman";
+                            mso-bidi-font-family: "Times New Roman";
+                        }
+                        body, div, table, tbody, tr, td, p, span, strong, b, em, i, u {
+                            font-family: "Times New Roman", Times, serif !important;
+                            mso-ascii-font-family: "Times New Roman";
+                            mso-hansi-font-family: "Times New Roman";
+                            mso-bidi-font-family: "Times New Roman";
+                            color: #000000;
+                        }
+                    </style>
+                </head>
+                <body style="font-family: 'Times New Roman', Times, serif; font-size: 12.5pt; line-height: 1.35; color: #000000;">
+                    <div class="WordSection1" style="font-family: 'Times New Roman', Times, serif;">
+                        ${innerContent}
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const blob = new Blob(['\ufeff', wordHtml], { type: 'application/msword;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            const fileSlug = state.mst ? state.mst.trim() : 'DoanhNghiep';
+            link.href = url;
+            link.download = `Cong_van_Reset_CKS_${fileSlug}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showToast('Đã tải xuống file Word (.doc) chuẩn 01 trang A4!', 'success');
+        }
+
+        function printOfficialLetter() {
+            if (!validateOfficialLetterFields()) return;
+
+            const printArea = document.getElementById('print-area');
+            printArea.innerHTML = `<div class="a4-paper">${buildOfficialLetterHtml()}</div>`;
+            printArea.classList.remove('hidden');
+            window.print();
+            setTimeout(() => {
+                printArea.classList.add('hidden');
+            }, 500);
+        }
+
+        // ==================== CUSTOMS PARAMETERS GENERATOR ====================
         function generateParamsText(dateObj = new Date()) {
             const mstVal = state.mst || '[Chưa nhập MST]';
             const u1 = state.userId1 || '[Chưa nhập User ID 1]';
@@ -735,7 +1654,6 @@
                    `Ngày xuất: ${formatDateTime(dateObj)}`;
         }
 
-        // Helper: HTML to Plain Text
         function getPlainTextFromHtml(html) {
             const temp = document.createElement('div');
             temp.innerHTML = html.replace(/<br\s*\/?>/gi, '\n');
@@ -743,13 +1661,16 @@
         }
 
         function updateEmailPreview() {
-            emailPreviewArea.innerHTML = generateEmailBody(state.mst, state.companyName);
+            const subj = getCurrentEmailSubject();
+            emailSubjectDisplay.textContent = subj;
+            configSubjectText.textContent = subj;
+            emailPreviewArea.innerHTML = generateEmailBody();
         }
 
         function updateParamsPreview(dateObj = new Date()) {
             if (state.mst) {
                 paramMstText.textContent = state.mst;
-                paramMstText.className = "font-mono text-xs font-bold text-indigo-900";
+                paramMstText.className = "font-mono text-xs font-bold text-blue-950";
             } else {
                 paramMstText.textContent = "[Chưa nhập MST]";
                 paramMstText.className = "font-mono text-xs font-medium text-slate-400";
@@ -759,9 +1680,11 @@
 
         function syncUI() {
             updateEmailPreview();
+            updateLetterPreviews();
             updateParamsPreview();
         }
 
+        // ==================== NOTIFICATIONS & CLIPBOARD ====================
         function showToast(message, type = 'success') {
             toastMessage.textContent = message;
             
@@ -809,7 +1732,7 @@
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showToast('Đã sao chép nội dung Email (giữ nguyên in đậm)!', 'success');
+                    showToast('Đã sao chép nội dung Email (giữ nguyên định dạng)!', 'success');
                 } else {
                     showToast("Lỗi sao chép thủ công.", 'error');
                 }
@@ -819,42 +1742,78 @@
             selection.removeAllRanges();
         }
 
+        // ==================== TAB & SUB-VIEW CONTROLLERS ====================
         function switchSubTab(tab) {
             if (tab === 'guide') {
-                subtabGuideBtn.className = "flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white text-indigo-600 border-b-2 border-indigo-600";
-                subtabConfigBtn.className = "flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                subtabGuideBtn.className = "flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-white text-blue-700 border-b-2 border-blue-700";
+                subtabConfigBtn.className = "flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
                 subtabGuideContent.classList.remove('hidden');
                 subtabConfigContent.classList.add('hidden');
             } else {
-                subtabConfigBtn.className = "flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-white text-indigo-600 border-b-2 border-indigo-600";
-                subtabGuideBtn.className = "flex-1 py-2 px-3 text-xs font-bold transition-all flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
+                subtabConfigBtn.className = "flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-white text-blue-700 border-b-2 border-blue-700";
+                subtabGuideBtn.className = "flex-1 h-full px-3 text-xs font-bold transition-colors flex items-center justify-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
                 subtabConfigContent.classList.remove('hidden');
                 subtabGuideContent.classList.add('hidden');
             }
         }
 
-        function switchTab(activeTab) {
-            if (activeTab === 'email') {
-                tabEmailBtn.className = "px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-white text-indigo-600 border-b-2 border-indigo-600 shadow-sm";
-                tabParamsBtn.className = "px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
-                
-                tabEmailContainer.classList.remove('hidden');
-                tabParamsContainer.classList.add('hidden');
+        function switchCvSubView(view) {
+            const composeBtn = document.getElementById('cv-subview-compose-btn');
+            const guideBtn = document.getElementById('cv-subview-guide-btn');
+            const composePanel = document.getElementById('cv-subview-compose');
+            const guidePanel = document.getElementById('cv-subview-guide');
 
-                btnCopyAll.classList.remove('hidden');
-                btnCopyParamsHeader.classList.add('hidden');
+            if (view === 'compose') {
+                composeBtn.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors flex items-center gap-1.5";
+                guideBtn.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-colors flex items-center gap-1.5";
+                composePanel.classList.remove('hidden');
+                guidePanel.classList.add('hidden');
             } else {
-                tabParamsBtn.className = "px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-white text-amber-600 border-b-2 border-amber-500 shadow-sm";
-                tabEmailBtn.className = "px-4 py-3 text-xs font-bold transition-all flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-800 border-b-2 border-transparent";
-                
-                tabParamsContainer.classList.remove('hidden');
-                tabEmailContainer.classList.add('hidden');
+                guideBtn.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-blue-700 text-white shadow-sm transition-colors flex items-center gap-1.5";
+                composeBtn.className = "px-3 py-1 rounded-lg text-[11px] font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-100 transition-colors flex items-center gap-1.5";
+                guidePanel.classList.remove('hidden');
+                composePanel.classList.add('hidden');
+            }
+        }
 
-                btnCopyAll.classList.add('hidden');
+        function switchTab(activeTab) {
+            const baseInactive = "h-full px-4 text-xs font-bold transition-colors flex items-center gap-2 bg-slate-50 text-slate-500 hover:text-slate-900 border-b-2 border-transparent whitespace-nowrap";
+            const baseActive = "h-full px-4 text-xs font-bold transition-colors flex items-center gap-2 bg-white text-blue-700 border-b-2 border-blue-700 whitespace-nowrap";
+
+            tabEmailBtn.className = baseInactive;
+            tabLetterBtn.className = baseInactive;
+            tabParamsBtn.className = baseInactive;
+
+            tabEmailContainer.classList.add('hidden');
+            tabLetterContainer.classList.add('hidden');
+            tabParamsContainer.classList.add('hidden');
+
+            btnCopyAll.classList.add('hidden');
+            btnCopyParamsHeader.classList.add('hidden');
+
+            if (activeTab === 'email') {
+                tabEmailBtn.className = baseActive;
+                tabEmailContainer.classList.remove('hidden');
+                btnCopyAll.classList.remove('hidden');
+            } else if (activeTab === 'letter') {
+                tabLetterBtn.className = baseActive;
+                tabLetterContainer.classList.remove('hidden');
+            } else {
+                tabParamsBtn.className = baseActive;
+                tabParamsContainer.classList.remove('hidden');
                 btnCopyParamsHeader.classList.remove('hidden');
             }
         }
 
+        function openLetterFullModal() {
+            updateLetterPreviews();
+            document.getElementById('letter-full-modal').classList.remove('hidden');
+        }
+        function closeLetterFullModal() {
+            document.getElementById('letter-full-modal').classList.add('hidden');
+        }
+
+        // ==================== TAX CODE LOOKUP API ====================
         async function fetchCompanyInfo(mst) {
             if (!mst || mst.trim() === '') {
                 showToast('Vui lòng nhập mã số thuế', 'error');
@@ -867,9 +1826,8 @@
             btnLookupText.textContent = 'Đang tìm...';
             btnLookupSpinner.classList.remove('hidden');
             
-            // Show inline status on the same line as label
             lookupStatus.classList.remove('hidden');
-            lookupStatus.className = "text-[10px] font-medium text-indigo-600 flex items-center gap-1";
+            lookupStatus.className = "text-[10px] font-medium text-blue-700 flex items-center gap-1";
             lookupStatus.innerHTML = '<i class="fa-solid fa-circle-notch animate-spin"></i> Đang tìm...';
 
             try {
@@ -877,18 +1835,35 @@
                 const result = await response.json();
 
                 if (result && result.code === '00' && result.data) {
-                    const companyName = result.data.name;
+                    const companyName = result.data.name || '';
+                    const companyAddress = result.data.address || '';
+
                     companyNameInput.value = companyName;
+                    companyAddressInput.value = companyAddress;
                     
                     state.companyName = companyName;
+                    state.companyAddress = companyAddress;
                     state.mst = cleanedMst;
                     mstInput.value = cleanedMst;
+
+                    clearFieldError(mstInput);
+                    if (companyName) clearFieldError(companyNameInput);
+                    if (companyAddress) {
+                        clearFieldError(companyAddressInput);
+                        const detectedCity = detectProvinceFromAddress(companyAddress);
+                        if (detectedCity) {
+                            state.cvCity = detectedCity;
+                            cvCityInput.value = detectedCity;
+                            clearFieldError(cvCityInput);
+                        }
+                    }
                     
+                    saveDraft();
                     syncUI();
                     
-                    lookupStatus.className = "text-[10px] font-bold text-emerald-600 flex items-center gap-1";
+                    lookupStatus.className = "text-[10px] font-bold text-emerald-700 flex items-center gap-1";
                     lookupStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Thành công!';
-                    showToast('Đã tự động điền tên doanh nghiệp', 'success');
+                    showToast('Đã đồng bộ Tên, Địa chỉ & Tỉnh/TP doanh nghiệp!', 'success');
                 } else {
                     throw new Error(result.desc || 'Không tìm thấy');
                 }
@@ -896,9 +1871,9 @@
                 state.mst = cleanedMst;
                 syncUI();
 
-                lookupStatus.className = "text-[10px] font-bold text-amber-600 flex items-center gap-1";
+                lookupStatus.className = "text-[10px] font-bold text-amber-700 flex items-center gap-1";
                 lookupStatus.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Tự gõ tên!';
-                showToast('Vui lòng điền tên doanh nghiệp thủ công', 'error');
+                showToast('Không tìm thấy trên cổng tự động, vui lòng điền thủ công', 'error');
             } finally {
                 btnLookup.disabled = false;
                 btnLookupText.textContent = 'Tra cứu';
@@ -906,33 +1881,163 @@
             }
         }
 
-        // Listeners
+        // ==================== EVENT LISTENERS ====================
         mstInput.addEventListener('input', (e) => {
             const cleanVal = e.target.value.trim();
             state.mst = cleanVal;
+            if (cleanVal) clearFieldError(mstInput);
             
             if (cleanVal === '') {
                 state.companyName = '';
+                state.companyAddress = '';
                 companyNameInput.value = '';
+                companyAddressInput.value = '';
                 lookupStatus.classList.add('hidden');
                 lookupStatus.innerHTML = '';
             }
+            saveDraft();
             syncUI();
         });
 
         companyNameInput.addEventListener('input', (e) => {
             state.companyName = e.target.value;
+            if (e.target.value.trim()) clearFieldError(companyNameInput);
+            saveDraft();
             syncUI();
         });
 
+        companyAddressInput.addEventListener('input', (e) => {
+            state.companyAddress = e.target.value;
+            if (e.target.value.trim()) clearFieldError(companyAddressInput);
+            const detectedCity = detectProvinceFromAddress(e.target.value);
+            if (detectedCity) {
+                state.cvCity = detectedCity;
+                cvCityInput.value = detectedCity;
+                clearFieldError(cvCityInput);
+            }
+            saveDraft();
+            updateLetterPreviews();
+        });
+
+        // Searchable Province/City Combobox Events
+        cvCityInput.addEventListener('focus', () => {
+            openCityDropdown(false);
+        });
+
+        cvCityInput.addEventListener('input', (e) => {
+            state.cvCity = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvCityInput);
+            openCityDropdown(false);
+            saveDraft();
+            updateLetterPreviews();
+        });
+
+        cvCityInput.addEventListener('keydown', (e) => {
+            const items = cityDropdownPanel.querySelectorAll('.city-option-btn');
+            if (cityDropdownPanel.classList.contains('hidden')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    openCityDropdown(false);
+                }
+                return;
+            }
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (items.length > 0) {
+                    highlightedCityIndex = (highlightedCityIndex + 1) % items.length;
+                    items.forEach((btn, idx) => btn.classList.toggle('bg-blue-100', idx === highlightedCityIndex));
+                    items[highlightedCityIndex].scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (items.length > 0) {
+                    highlightedCityIndex = (highlightedCityIndex - 1 + items.length) % items.length;
+                    items.forEach((btn, idx) => btn.classList.toggle('bg-blue-100', idx === highlightedCityIndex));
+                    items[highlightedCityIndex].scrollIntoView({ block: 'nearest' });
+                }
+            } else if (e.key === 'Enter') {
+                if (highlightedCityIndex >= 0 && items[highlightedCityIndex]) {
+                    e.preventDefault();
+                    selectCityOption(items[highlightedCityIndex].getAttribute('data-city-name'));
+                } else {
+                    closeCityDropdown();
+                }
+            } else if (e.key === 'Escape') {
+                closeCityDropdown();
+            }
+        });
+
+        btnToggleCity.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (cityDropdownPanel.classList.contains('hidden')) {
+                cvCityInput.focus();
+                openCityDropdown(true);
+            } else {
+                closeCityDropdown();
+            }
+        });
+
+        btnClearCity.addEventListener('click', (e) => {
+            e.stopPropagation();
+            state.cvCity = '';
+            cvCityInput.value = '';
+            cvCityInput.focus();
+            openCityDropdown(true);
+            saveDraft();
+            updateLetterPreviews();
+        });
+
+        // Letter inputs listeners
+        cvNumberInput.addEventListener('input', (e) => {
+            state.cvNumber = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvNumberInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+        cvDateInput.addEventListener('input', (e) => {
+            state.cvDate = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvDateInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+        cvContactNameInput.addEventListener('input', (e) => {
+            state.cvContactName = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvContactNameInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+        cvPhoneInput.addEventListener('input', (e) => {
+            state.cvPhone = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvPhoneInput);
+            saveDraft();
+            syncUI();
+        });
+        cvEmailInput.addEventListener('input', (e) => {
+            state.cvEmail = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvEmailInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+        cvCaProviderInput.addEventListener('input', (e) => {
+            state.cvCaProvider = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvCaProviderInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+        cvSerialInput.addEventListener('input', (e) => {
+            state.cvSerial = e.target.value;
+            if (e.target.value.trim()) clearFieldError(cvSerialInput);
+            saveDraft();
+            updateLetterPreviews();
+        });
+
+        // Parameters inputs listeners
         userid1Input.addEventListener('input', (e) => {
             const val = e.target.value;
             state.userId1 = val;
-            
             const nextUserId = autoIncrementUserId(val);
             state.userId2 = nextUserId;
             userid2Input.value = nextUserId;
-            
             updateParamsPreview();
         });
 
@@ -965,18 +2070,39 @@
         btnClear.addEventListener('click', () => {
             mstInput.value = '';
             companyNameInput.value = '';
+            companyAddressInput.value = '';
             state.mst = '';
             state.companyName = '';
+            state.companyAddress = '';
             
+            state.cvNumber = `01/${yyyy}`;
+            state.cvCity = 'TP. Hồ Chí Minh';
+            state.cvDate = `${yyyy}-${mm}-${dd}`;
+            state.cvContactName = '';
+            state.cvPhone = '';
+            state.cvEmail = '';
+            state.cvSerial = '';
+            state.cvCaProvider = 'ONE-CA SHA-256';
+            cvNumberInput.value = state.cvNumber;
+            cvCityInput.value = state.cvCity;
+            cvDateInput.value = state.cvDate;
+            cvContactNameInput.value = '';
+            cvPhoneInput.value = '';
+            cvEmailInput.value = '';
+            cvSerialInput.value = '';
+            cvCaProviderInput.value = 'ONE-CA SHA-256';
+
             state.userId1 = '';
             state.userId2 = '';
             state.terminalId = '';
             state.terminalAccessKey = '';
-            
             userid1Input.value = '';
             userid2Input.value = '';
             terminalidInput.value = '';
             accesskeyInput.value = '';
+
+            getMandatoryLetterFields().forEach(f => clearFieldError(f.el));
+            localStorage.removeItem(STORAGE_KEY);
 
             lookupStatus.classList.add('hidden');
             syncUI();
@@ -999,19 +2125,27 @@
         btnSendGmail.addEventListener('click', () => {
             const rawHtml = emailPreviewArea.innerHTML;
             const plainBody = getPlainTextFromHtml(rawHtml);
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailRecipient)}&su=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(plainBody)}`;
+            const subj = getCurrentEmailSubject();
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(emailRecipient)}&su=${encodeURIComponent(subj)}&body=${encodeURIComponent(plainBody)}`;
             window.open(gmailUrl, '_blank', 'noopener,noreferrer');
         });
 
-        // Sub-tabs in column 1
+        // Column 1 Sub-tabs
         subtabGuideBtn.addEventListener('click', () => switchSubTab('guide'));
         subtabConfigBtn.addEventListener('click', () => switchSubTab('config'));
 
         // Main tabs
         tabEmailBtn.addEventListener('click', () => switchTab('email'));
+        tabLetterBtn.addEventListener('click', () => switchTab('letter'));
         tabParamsBtn.addEventListener('click', () => switchTab('params'));
 
-        // Direct initialization
+        // Close modal on backdrop click
+        document.getElementById('letter-full-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'letter-full-modal') closeLetterFullModal();
+        });
+
+        // Load saved draft & initialize UI
+        loadDraft();
         syncUI();
     </script>
 </body>
